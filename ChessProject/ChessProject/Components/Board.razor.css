@@ -1,0 +1,27 @@
+﻿.row {
+
+}
+
+.cell {
+    height: 80px;
+    width: 80px;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+/*barvanje celic*/
+.row:nth-child(2n) .cell:nth-child(2n+1) {
+    background: tan;
+}
+
+.row:nth-child(2n) .cell:nth-child(2n) {
+    background: #eee;
+}
+
+.row:nth-child(2n+1) .cell:nth-child(2n+1) {
+    background: #eee;
+}
+
+.row:nth-child(2n+1) .cell:nth-child(2n) {
+    background: tan;
+}

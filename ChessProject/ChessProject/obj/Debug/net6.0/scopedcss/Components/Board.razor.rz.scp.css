@@ -1,0 +1,27 @@
+.row[b-8zqnplhlsd] {
+
+}
+
+.cell[b-8zqnplhlsd] {
+    height: 80px;
+    width: 80px;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+/*barvanje celic*/
+.row:nth-child(2n) .cell:nth-child(2n+1)[b-8zqnplhlsd] {
+    background: tan;
+}
+
+.row:nth-child(2n) .cell:nth-child(2n)[b-8zqnplhlsd] {
+    background: #eee;
+}
+
+.row:nth-child(2n+1) .cell:nth-child(2n+1)[b-8zqnplhlsd] {
+    background: #eee;
+}
+
+.row:nth-child(2n+1) .cell:nth-child(2n)[b-8zqnplhlsd] {
+    background: tan;
+}
