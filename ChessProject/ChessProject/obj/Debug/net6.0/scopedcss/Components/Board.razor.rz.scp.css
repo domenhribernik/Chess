@@ -9,6 +9,10 @@
     border: 1px solid black;
 }
 
+.cell.active[b-8zqnplhlsd] {
+    border: 3px solid green;
+}
+
 /*barvanje celic*/
 .row:nth-child(2n) .cell:nth-child(2n+1)[b-8zqnplhlsd] {
     background: tan;
@@ -24,4 +28,18 @@
 
 .row:nth-child(2n+1) .cell:nth-child(2n)[b-8zqnplhlsd] {
     background: tan;
+}
+
+.pawn[b-8zqnplhlsd] {
+    width: 60px;
+    height: 60px;
+}
+
+.pawn.active[b-8zqnplhlsd] {
+    border: 2px solid red;
+}
+
+.board-piece[b-8zqnplhlsd] {
+    width: 50px;
+    height: 50px;
 }
