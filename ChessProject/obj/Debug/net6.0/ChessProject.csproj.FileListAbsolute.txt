@@ -1,0 +1,56 @@
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\bin\Debug\net6.0\appsettings.Development.json
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\bin\Debug\net6.0\appsettings.json
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\bin\Debug\net6.0\ChessProject.staticwebassets.runtime.json
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\bin\Debug\net6.0\ChessProject.exe
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\bin\Debug\net6.0\ChessProject.deps.json
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\bin\Debug\net6.0\ChessProject.runtimeconfig.json
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\bin\Debug\net6.0\ChessProject.dll
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\bin\Debug\net6.0\ChessProject.pdb
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.csproj.AssemblyReference.cache
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.AssemblyInfoInputs.cache
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.AssemblyInfo.cs
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.csproj.CoreCompileInputs.cache
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.RazorAssemblyInfo.cache
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.RazorAssemblyInfo.cs
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\scopedcss\Shared\MainLayout.razor.rz.scp.css
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\scopedcss\Shared\NavMenu.razor.rz.scp.css
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\scopedcss\bundle\ChessProject.styles.css
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\scopedcss\projectbundle\ChessProject.bundle.scp.css
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.dll
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\refint\ChessProject.dll
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.pdb
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.genruntimeconfig.cache
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\ref\ChessProject.dll
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\scopedcss\Components\Board.razor.rz.scp.css
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\bin\Debug\net6.0\appsettings.Development.json
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\bin\Debug\net6.0\appsettings.json
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\bin\Debug\net6.0\ChessProject.staticwebassets.runtime.json
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\bin\Debug\net6.0\ChessProject.exe
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\bin\Debug\net6.0\ChessProject.deps.json
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\bin\Debug\net6.0\ChessProject.runtimeconfig.json
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\bin\Debug\net6.0\ChessProject.dll
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\bin\Debug\net6.0\ref\ChessProject.dll
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\bin\Debug\net6.0\ChessProject.pdb
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.csproj.AssemblyReference.cache
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.AssemblyInfoInputs.cache
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.AssemblyInfo.cs
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.csproj.CoreCompileInputs.cache
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.RazorAssemblyInfo.cache
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.RazorAssemblyInfo.cs
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\obj\Debug\net6.0\staticwebassets.build.json
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\obj\Debug\net6.0\staticwebassets.development.json
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\obj\Debug\net6.0\scopedcss\Components\Board.razor.rz.scp.css
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\obj\Debug\net6.0\scopedcss\Shared\MainLayout.razor.rz.scp.css
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\obj\Debug\net6.0\scopedcss\Shared\NavMenu.razor.rz.scp.css
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\obj\Debug\net6.0\scopedcss\bundle\ChessProject.styles.css
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\obj\Debug\net6.0\scopedcss\projectbundle\ChessProject.bundle.scp.css
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.dll
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\obj\Debug\net6.0\ref\ChessProject.dll
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.pdb
+C:\Users\kazar\OneDrive\Documents\Faks-snov\RAZVOJ PROGRAMSKE OPREME\Chess-Front-end\Chess-Front-end\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.genruntimeconfig.cache

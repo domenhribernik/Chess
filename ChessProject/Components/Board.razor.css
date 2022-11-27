@@ -1,0 +1,41 @@
+﻿.cell {
+    height: 80px;
+    width: 80px;
+    padding: 10px;
+    border: 1px solid black;
+}
+
+.cell.active {
+    border: 3px solid green;
+}
+
+/*barvanje celic*/
+.row:nth-child(2n) .cell:nth-child(2n+1) {
+    background: tan;
+}
+
+.row:nth-child(2n) .cell:nth-child(2n) {
+    background: #eee;
+}
+
+.row:nth-child(2n+1) .cell:nth-child(2n+1) {
+    background: #eee;
+}
+
+.row:nth-child(2n+1) .cell:nth-child(2n) {
+    background: tan;
+}
+
+.pawn {
+    width: 60px;
+    height: 60px;
+}
+
+.pawn.active {
+    border: 2px solid red;
+}
+
+.board-piece {
+    width: 58px;
+    height: 58px;
+}
