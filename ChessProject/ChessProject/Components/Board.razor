@@ -52,7 +52,7 @@
 
         for (int i = 0; i < 8; i++)
         {
-            blackPawns.Add(new PawnData
+            whitePawns.Add(new PawnData
             {
                 Color = "white",
                 Column = i,
@@ -73,58 +73,60 @@
 
         if (activePawn != null)
         {
-            //poje
+            //crni kmet poje
             if ((activePawn.Color == black) && (IfFigureExists(activePawn.Row + 1, activePawn.Column - 1)))
             {
-                Console.WriteLine("je");
                 var whitePawn = whitePawns.FirstOrDefault(n => n.Row == activePawn.Row + 1 && n.Column == activePawn.Column - 1);
                 if (whitePawn != null)
                 {
-                    whitePawns.Remove(whitePawn);
-                    Console.WriteLine("j2e");
+                    cellsPossible.Add((activePawn.Row + 1, activePawn.Column - 1));
                 }
-                AddIfFigureExists(activePawn.Row + 1, activePawn.Column - 1);
             }
             if ((activePawn.Color == black) && (IfFigureExists(activePawn.Row + 1, activePawn.Column + 1)))
             {
-                Console.WriteLine("je");
                 var whitePawn = whitePawns.FirstOrDefault(n => n.Row == activePawn.Row + 1 && n.Column == activePawn.Column + 1);
                 if (whitePawn != null)
                 {
-                    whitePawns.Remove(whitePawn);
-                    AddIfFigureExists(activePawn.Row + 1, activePawn.Column + 1);
+                    cellsPossible.Add((activePawn.Row + 1, activePawn.Column + 1));
+                }
+            }
+
+            //beli kmet poje
+            if ((activePawn.Color == white) && (IfFigureExists(activePawn.Row - 1, activePawn.Column - 1)))
+            {
+                var blackPawn = blackPawns.FirstOrDefault(n => n.Row == activePawn.Row - 1 && n.Column == activePawn.Column - 1);
+                if (blackPawn != null)
+                {
+                    cellsPossible.Add((activePawn.Row - 1, activePawn.Column - 1));
+                }
+            }
+            if ((activePawn.Color == white) && (IfFigureExists(activePawn.Row - 1, activePawn.Column + 1)))
+            {
+                var blackPawn = blackPawns.FirstOrDefault(n => n.Row == activePawn.Row - 1 && n.Column == activePawn.Column + 1);
+                if (blackPawn != null)
+                {
+                    cellsPossible.Add((activePawn.Row - 1, activePawn.Column + 1));
                 }
             }
 
             //1 polje naprej
             if (activePawn.Direction == PawnDirection.Down) {
-                AddIfFigureExists(activePawn.Row + 1, activePawn.Column);
-                var whitePawn = blackPawns.FirstOrDefault(n => n.Row == 6 && n.Column == 1);
-                if (whitePawn != null)
-                {
-                    whitePawns.Remove(whitePawn);
-                    Console.WriteLine("j2e");
-                }
-                else {
-                    Console.WriteLine("niii");
-                }
+                AddIfFigureNotExists(activePawn.Row + 1, activePawn.Column);
             }
             else if (activePawn.Direction == PawnDirection.Up)
             {
-                AddIfFigureExists(activePawn.Row - 1, activePawn.Column);
+                AddIfFigureNotExists(activePawn.Row - 1, activePawn.Column);
             }
 
             //za 2 naprej na zacetku
             if ((activePawn.Row == 1) && (activePawn.Color == black) && (!IfFigureExists(2, activePawn.Column)))
             {
-                AddIfFigureExists(3, activePawn.Column);
+                AddIfFigureNotExists(3, activePawn.Column);
             }
             else if ((activePawn.Row == 6) && (activePawn.Color == white) && (!IfFigureExists(5, activePawn.Column)))
             {
-                AddIfFigureExists(4, activePawn.Column);
+                AddIfFigureNotExists(4, activePawn.Column);
             }
-
-
         }
     }
 
@@ -142,13 +144,42 @@
         }
     }
 
-    void AddIfFigureExists(int row, int column) {
+    bool IfWhiteFigureExists(int row, int column) {
+        var blackPawn = blackPawns.FirstOrDefault(n => n.Column == column && n.Row == row);
+        var whitePawn = whitePawns.FirstOrDefault(n => n.Column == column && n.Row == row);
+
+        if ((blackPawn == null) && (whitePawn != null))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    bool IfBlackFigureExists(int row, int column)
+    {
+        var blackPawn = blackPawns.FirstOrDefault(n => n.Column == column && n.Row == row);
+        var whitePawn = whitePawns.FirstOrDefault(n => n.Column == column && n.Row == row);
+
+        if ((blackPawn != null) && (whitePawn == null))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    void AddIfFigureNotExists(int row, int column) {
 
         if (!IfFigureExists(row, column)) {
             cellsPossible.Add((row, column));
-            Console.Write(row);
-            Console.Write(column);
-            Console.Write("\n");
+            //Console.Write(row);
+            //Console.Write(column);
+            //Console.Write("\n");
         }
     }
 
@@ -158,6 +189,21 @@
         if (!canMoveHere) {
             return;
         }
+
+        //katero figuro je treba pojest
+        if (IfWhiteFigureExists(row, column) && !whiteTurn) {
+            var whitePawn = whitePawns.FirstOrDefault(n => n.Row == row && n.Column == column);
+            if (whitePawn != null)
+            {
+                whitePawns.Remove(whitePawn);
+            }
+        }
+        else if (IfBlackFigureExists(row, column) && whiteTurn)
+        {
+            var blackPawn = blackPawns.FirstOrDefault(n => n.Row == row && n.Column == column);
+            blackPawns.Remove(blackPawn);
+        }
+        
         //premik
         activePawn.Column = column;
         activePawn.Row = row;
@@ -185,9 +231,5 @@
         }
 
         CheckDirectionsPawns();
-    }
-
-    void DeleteFigure() {
-
     }
 }
