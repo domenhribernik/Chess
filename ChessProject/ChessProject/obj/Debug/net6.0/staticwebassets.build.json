@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "UwoYTbQwVPLbJ+G+LpArSa0KIdn8OYRWRCUtFK/2w+I=",
+  "Hash": "CpHBCoGQ+ogvPMRqpyeLetJWC9jehv69Dem9zDD1doQ=",
   "Source": "ChessProject",
   "BasePath": "_content/ChessProject",
   "Mode": "Default",
@@ -287,23 +287,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\pictures\\black_pawn.svg"
-    },
-    {
-      "Identity": "C:\\Users\\HP\\Desktop\\vaje\\DrugiL\\RPO\\ChessProject\\ChessProject\\ChessProject\\wwwroot\\pictures\\pawn2.png",
-      "SourceId": "ChessProject",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\HP\\Desktop\\vaje\\DrugiL\\RPO\\ChessProject\\ChessProject\\ChessProject\\wwwroot\\",
-      "BasePath": "_content/ChessProject",
-      "RelativePath": "pictures/pawn2.png",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\pictures\\pawn2.png"
     },
     {
       "Identity": "C:\\Users\\HP\\Desktop\\vaje\\DrugiL\\RPO\\ChessProject\\ChessProject\\ChessProject\\wwwroot\\pictures\\white_pawn.svg",
