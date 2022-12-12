@@ -174,6 +174,8 @@
     string white = "white";
     bool whiteTurn = true;
 
+    bool blackHasChess = false; //crni je v šahu
+    bool whiteHasChess = false;
 
     //za izpis vrst bi lahko dodav kao ascii znak 55 da bi bla crka in st.
 
@@ -347,7 +349,7 @@
         }
         Console.WriteLine("________________________________________________________");
         for (int i = 0; i < whitePieces.Count; i++)
-        {
+            {
             Console.WriteLine(whitePieces[i].Type + " " + whitePieces[i].Row + " " + whitePieces[i].Column);
         }*/
     }
@@ -365,13 +367,13 @@
         {
             //tu noter je treba pazit ali se figura poje in preveri na tak nacin, ali pa se premakne, ker ima prosto polje!!!!
 
-            //crni poje 1 naprej diagonalno
+            //crni poje 1 naprej diagonalno le poje
             if ((activePiece.Color == black) && (activePiece.Type == PiecesData.Type.Pawn))
             {
                 if (IfFigureExists(activePiece.Row + 1, activePiece.Column - 1))
                 {
                     var whitePiece = whitePieces.FirstOrDefault(n => n.Row == activePiece.Row + 1 && n.Column == activePiece.Column - 1);
-                    if (whitePiece != null)
+                    if ((whitePiece != null))//&& !checkIfChessCoordinates(activePiece.Row + 1, activePiece.Column - 1)
                     {
                         cellsPossible.Add((activePiece.Row + 1, activePiece.Column - 1));
                     }
@@ -379,7 +381,7 @@
                 if (IfFigureExists(activePiece.Row + 1, activePiece.Column + 1))
                 {
                     var whitePiece = whitePieces.FirstOrDefault(n => n.Row == activePiece.Row + 1 && n.Column == activePiece.Column + 1);
-                    if (whitePiece != null)
+                    if ((whitePiece != null))//&& !checkIfChessCoordinates(activePiece.Row + 1, activePiece.Column + 1)
                     {
                         cellsPossible.Add((activePiece.Row + 1, activePiece.Column + 1));
                     }
@@ -387,12 +389,12 @@
             }
 
             //beli poje 1 naprej diagonalno
-            if ((activePiece.Color == white) && (activePiece.Type == PiecesData.Type.Pawn))
+            if ((activePiece.Color == white) && ((activePiece.Type == PiecesData.Type.Pawn) || (activePiece.Type == PiecesData.Type.King)))
             {
                 if (IfFigureExists(activePiece.Row - 1, activePiece.Column - 1))
                 {
                     var blackPiece = blackPieces.FirstOrDefault(n => n.Row == activePiece.Row - 1 && n.Column == activePiece.Column - 1);
-                    if (blackPiece != null)
+                    if ((blackPiece != null))//&& !checkIfChessCoordinates(activePiece.Row - 1, activePiece.Column - 1)
                     {
                         cellsPossible.Add((activePiece.Row - 1, activePiece.Column - 1));
                     }
@@ -400,7 +402,7 @@
                 if (IfFigureExists(activePiece.Row - 1, activePiece.Column + 1))
                 {
                     var blackPiece = blackPieces.FirstOrDefault(n => n.Row == activePiece.Row - 1 && n.Column == activePiece.Column + 1);
-                    if (blackPiece != null)
+                    if ((blackPiece != null))//&& !checkIfChessCoordinates(activePiece.Row - 1, activePiece.Column + 1)
                     {
                         cellsPossible.Add((activePiece.Row - 1, activePiece.Column + 1));
                     }
@@ -419,7 +421,7 @@
                     AddIfFigureNotExists(activePiece.Row - 1, activePiece.Column);
                 }
             }
-            
+
 
             //za 2 polja naprej na zacetku premakne
             if (activePiece.Type == PiecesData.Type.Pawn) 
@@ -433,8 +435,132 @@
                     AddIfFigureNotExists(4, activePiece.Column);
                 }
             }
+
+            //premik za 1 polje gor, dol, levo, desno, poje ce treba
+            if ((activePiece.Type == PiecesData.Type.Rook) || (activePiece.Type == PiecesData.Type.Queen) || (activePiece.Type == PiecesData.Type.King))
+            {
+                AddIfSameColorNotExists(activePiece, activePiece.Row, activePiece.Column + 1);
+                AddIfSameColorNotExists(activePiece, activePiece.Row, activePiece.Column - 1);
+                AddIfSameColorNotExists(activePiece, activePiece.Row + 1, activePiece.Column);
+                AddIfSameColorNotExists(activePiece, activePiece.Row - 1, activePiece.Column);
+            }
+
+            //diagonalni premik za 1 polje, poje ce treba
+            if ((activePiece.Type == PiecesData.Type.Bishop) || (activePiece.Type == PiecesData.Type.Queen) || (activePiece.Type == PiecesData.Type.King))
+            {
+                AddIfSameColorNotExists(activePiece, activePiece.Row + 1, activePiece.Column + 1);
+                AddIfSameColorNotExists(activePiece, activePiece.Row + 1, activePiece.Column - 1);
+                AddIfSameColorNotExists(activePiece, activePiece.Row - 1, activePiece.Column + 1);
+                AddIfSameColorNotExists(activePiece, activePiece.Row - 1, activePiece.Column - 1);
+            }
         }
     }
+
+    void checkIfChess()
+    {
+        blackHasChess = false;
+        whiteHasChess = false;
+
+        //ce ima crni sah
+        for (int i = 0; i < whitePieces.Count; i++)
+        {
+            if (blackHasChess)
+            {
+                break;
+            }
+
+            activePiece = whitePieces[i];
+            CheckDirections();
+            for (int j = 0; j < cellsPossible.Count; j++)
+            {
+                if ((cellsPossible[j].row == blackKing[0].Row) && (cellsPossible[j].column == blackKing[0].Column))
+                {
+                    blackHasChess = true;
+                    Console.WriteLine("Crni mas sah!");
+                    break;
+                }
+            }
+
+            activePiece = null;
+        }
+
+        //ce ima beli sah
+        for (int i = 0; i < blackPieces.Count; i++)
+        {
+            if (whiteHasChess)
+            {
+                break;
+            }
+
+            activePiece = blackPieces[i];
+            CheckDirections();
+            for (int j = 0; j < cellsPossible.Count; j++)
+            {
+                if ((cellsPossible[j].row == whiteKing[0].Row) && (cellsPossible[j].column == whiteKing[0].Column))
+                {
+                    whiteHasChess = true;
+                    Console.WriteLine("Beli mas sah!");
+                    break;
+                }
+            }
+
+            activePiece = null;
+        }
+    }
+
+    bool checkIfChessCoordinates(int row, int column)
+    {
+        //ce ima crni sah
+        if (whiteTurn)
+        {
+            for (int i = 0; i < whitePieces.Count; i++)
+            {
+                PieceData activeHolder = activePiece;
+                activePiece = whitePieces[i];
+                CheckDirections();
+                for (int j = 0; j < cellsPossible.Count; j++)
+                {
+                    if ((cellsPossible[j].row == row) && (cellsPossible[j].column == column))
+                    {
+                        return true;
+                    }
+                }
+
+                activePiece = activeHolder;
+            }
+        }
+
+        if (!whiteTurn)
+        {
+            for (int i = 0; i < blackPieces.Count; i++)
+            {
+                activePiece = blackPieces[i];
+                CheckDirections();
+                for (int j = 0; j < cellsPossible.Count; j++)
+                {
+                    if ((cellsPossible[j].row == row) && (cellsPossible[j].column == column))
+                    {
+                        return true;
+                    }
+                }
+
+                activePiece = null;
+            }
+        }
+
+        return false;
+    }
+    /*
+    void removeNotPossibleCells()
+    {
+        for (int i = 0; i < cellsPossible.Count; i++)
+        {
+            if (checkIfChessCoordinates(cellsPossible[i].row, cellsPossible[i].column))
+            {
+                cellsPossible.Remove(cellsPossible[i]);
+            }
+        }
+    }*/
 
     bool IfFigureExists(int row, int column)
     {
@@ -483,7 +609,19 @@
 
     void AddIfFigureNotExists(int row, int column)
     {
-        if (!IfFigureExists(row, column))
+        if (!IfFigureExists(row, column))//&& !checkIfChessCoordinates(row, column)
+        {
+            cellsPossible.Add((row, column));
+        }
+    }
+
+    void AddIfSameColorNotExists(PieceData activePiece, int row, int column) 
+    {
+        if ((activePiece.Color == white) && !IfWhiteFigureExists(row, column))//&& !checkIfChessCoordinates(row, column)
+        {
+            cellsPossible.Add((row, column));
+        }
+        else if ((activePiece.Color == black) && !IfBlackFigureExists(row, column))//&& !checkIfChessCoordinates(row, column)
         {
             cellsPossible.Add((row, column));
         }
@@ -492,6 +630,7 @@
     //premika
     void MovePiece(int row, int column)
     {
+        //removeNotPossibleCells();
         bool canMoveHere = cellsPossible.Contains((row, column));
         if (!canMoveHere)
         {
@@ -567,6 +706,7 @@
 
         activePiece = null;
         whiteTurn = !whiteTurn;
+        checkIfChess();
         CheckDirections();
     }
 
