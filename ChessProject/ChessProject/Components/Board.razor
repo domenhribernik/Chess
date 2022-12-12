@@ -5,21 +5,47 @@
     int localI = i;
     <div class="row">
         @for (int j = 0; j < 8; j++)
-        {
+        { //tukaj se lahko dodajo ostale figure
             int localJ = j;
             var pawn = blackPawns.FirstOrDefault(n => n.Column == j && n.Row == i);
+            var rook = blackRooks.FirstOrDefault(n => n.Column == j && n.Row == i);
+            var bishop = blackBishops.FirstOrDefault(n => n.Column == j && n.Row == i);
+            var knight = blackKnights.FirstOrDefault(n => n.Column == j && n.Row == i);
+            var queen = blackQueen.FirstOrDefault(n => n.Column == j && n.Row == i);
+            var king = blackKing.FirstOrDefault(n => n.Column == j && n.Row == i);
             if (pawn == null)
             {
                 pawn = whitePawns.FirstOrDefault(n => n.Column == j && n.Row == i);
             }
+            if (rook == null)
+            {
+                rook = whiteRooks.FirstOrDefault(n => n.Column == j && n.Row == i);
+            }
+            if (bishop == null)
+            {
+                bishop = whiteBishops.FirstOrDefault(n => n.Column == j && n.Row == i);
+            }
+            if (knight == null)
+            {
+                knight = whiteKnights.FirstOrDefault(n => n.Column == j && n.Row == i);
+            }
+            if (queen == null)
+            {
+                queen = whiteQueen.FirstOrDefault(n => n.Column == j && n.Row == i);
+            }
+            if (king == null)
+            {
+                king = whiteKing.FirstOrDefault(n => n.Column == j && n.Row == i);
+            }
 
             bool canMoveHere = cellsPossible.Contains((i, j));
 
-            <div @onclick="() => MovePawn(localI, localJ)" class="cell @(canMoveHere ? "active" : "")">
+            <div @onclick="() => MovePiece(localI, localJ)" class="cell @(canMoveHere ? "active" : "")">
+
                 @if (pawn != null)
                 {
-                    <div @onclick="() => { PawnClicked(pawn); }"
-             class="pawn @pawn.Color @(pawn == activePawn ? "active" : "")">
+                    <div @onclick="() => { PieceClicked(pawn); }"
+                    class="pawn @pawn.Color @(pawn == activePiece ? "active" : "")">
 
                         @if (pawn.Color == "black")
                         {
@@ -31,119 +57,391 @@
                         }
                     </div>
                 }
+
+                @if (rook != null)
+                {
+                    <div @onclick="() => { PieceClicked(rook); }"
+                    class="rook @rook.Color @(rook == activePiece ? "active" : "")">
+
+                        @if (rook.Color == "black")
+                        {
+                            <img class="board-piece" src="/pictures/black_rook.svg" />
+                        }
+                        else if (rook.Color == "white")
+                        {
+                            <img class="board-piece" src="/pictures/white_rook.svg" />
+                        }
+                    </div>
+                }
+
+                @if (bishop != null)
+                {
+                    <div @onclick="() => { PieceClicked(bishop); }"
+                    class="bishop @bishop.Color @(bishop == activePiece ? "active" : "")">
+                        @if (bishop.Color == "black")
+                        {
+                            <img class="board-piece" src="/pictures/black_bishop.svg" />
+                        }
+                        else if (bishop.Color == "white")
+                        {
+                            <img class="board-piece" src="/pictures/white_bishop.svg" />
+                        }
+                    </div>
+                }
+
+                @if (knight != null)
+                {
+                    <div @onclick="() => { PieceClicked(knight); }"
+                    class="knight @knight.Color @(knight == activePiece ? "active" : "")">
+                        @if (knight.Color == "black")
+                        {
+                            <img class="board-piece" src="/pictures/black_knight.svg" />
+                        }
+                        else if (knight.Color == "white")
+                        {
+                            <img class="board-piece" src="/pictures/white_knight.svg" />
+                        }
+                    </div>
+                }
+
+                @if (queen != null)
+                {
+                    <div @onclick="() => { PieceClicked(queen); }"
+                    class="queen @queen.Color @(queen == activePiece ? "active" : "")">
+                        @if (queen.Color == "black")
+                        {
+                            <img class="board-piece" src="/pictures/black_queen.svg" />
+                        }
+                        else if (queen.Color == "white")
+                        {
+                            <img class="board-piece" src="/pictures/white_queen.svg" />
+                        }
+                    </div>
+                }
+
+                @if (king != null)
+                {
+                    <div @onclick="() => { PieceClicked(king); }"
+                    class="king @king.Color @(king == activePiece ? "active" : "")">
+                        @if (king.Color == "black")
+                        {
+                            <img class="board-piece" src="/pictures/black_king.svg" />
+                        }
+                        else if (king.Color == "white")
+                        {
+                            <img class="board-piece" src="/pictures/white_king.svg" />
+                        }
+                    </div>
+                }
             </div>
         }
     </div>
 }
 
 @code {
-    List<PawnData> whitePawns = new List<PawnData>();
-    List<PawnData> blackPawns = new List<PawnData>();
+    //list, ki bo imel liste vseh figur
+    List<PieceData> piecesList = new List<PieceData>();
+
+    //v teh dveh seznamih so listi figur po barvah
+    List<PieceData> whitePieces = new List<PieceData>();
+    List<PieceData> blackPieces = new List<PieceData>();
+
+    //kmeti
+    List<PieceData> whitePawns = new List<PieceData>();
+    List<PieceData> blackPawns = new List<PieceData>();
+
+    //trdnjave
+    List<PieceData> whiteRooks = new List<PieceData>();
+    List<PieceData> blackRooks = new List<PieceData>();
+
+    //strelci
+    List<PieceData> whiteBishops = new List<PieceData>();
+    List<PieceData> blackBishops = new List<PieceData>();
+
+    //konji
+    List<PieceData> whiteKnights = new List<PieceData>();
+    List<PieceData> blackKnights = new List<PieceData>();
+
+    //kraljici
+    List<PieceData> whiteQueen = new List<PieceData>();
+    List<PieceData> blackQueen = new List<PieceData>();
+
+    //kralja
+    List<PieceData> whiteKing = new List<PieceData>();
+    List<PieceData> blackKing = new List<PieceData>();
+
     string black = "black";
     string white = "white";
     bool whiteTurn = true;
 
+
+    //za izpis vrst bi lahko dodav kao ascii znak 55 da bi bla crka in st.
+
     protected override void OnInitialized()
     {
+        //kmeti
         for (int i = 0; i < 8; i++)
         {
-            blackPawns.Add(new PawnData
+            blackPawns.Add(new PieceData
                 {
                     Color = "black",
                     Column = i,
                     Row = 1,
-                    Direction = PawnDirection.Down
+                    Direction = Direction.Down,
+                    Type = PiecesData.Type.Pawn
                 });
+
+            blackPieces.Add(blackPawns[i]);
         }
 
         for (int i = 0; i < 8; i++)
         {
-            whitePawns.Add(new PawnData
+            whitePawns.Add(new PieceData
                 {
                     Color = "white",
                     Column = i,
                     Row = 6,
-                    Direction = PawnDirection.Up
+                    Direction = Direction.Up,
+                    Type = PiecesData.Type.Pawn
+                });
+
+            whitePieces.Add(whitePawns[i]);
+        }
+
+        //trdnjave
+        for (int i = 0; i < 8; i += 7)
+        {
+            blackRooks.Add(new PieceData
+                {
+                    Color = "black",
+                    Column = i,
+                    Row = 0,
+                    Direction = Direction.Straight,
+                    Type = PiecesData.Type.Rook
                 });
         }
+
+        for (int i = 0; i < 8; i += 7)
+        {
+            whiteRooks.Add(new PieceData
+                {
+                    Color = "white",
+                    Column = i,
+                    Row = 7,
+                    Direction = Direction.Straight,
+                    Type = PiecesData.Type.Rook
+                });
+        }
+
+        //strelci
+        for (int i = 1; i < 7; i += 5)
+        {
+            blackBishops.Add(new PieceData
+                {
+                    Color = "black",
+                    Column = i,
+                    Row = 0,
+                    Direction = Direction.Diagonally,
+                    Type = PiecesData.Type.Bishop
+                });
+        }
+
+        for (int i = 1; i < 7; i += 5)
+        {
+            whiteBishops.Add(new PieceData
+                {
+                    Color = "white",
+                    Column = i,
+                    Row = 7,
+                    Direction = Direction.Diagonally,
+                    Type = PiecesData.Type.Bishop
+                });
+        }
+
+        //konji
+        for (int i = 2; i < 6; i += 3)
+        {
+            blackKnights.Add(new PieceData
+                {
+                    Color = "black",
+                    Column = i,
+                    Row = 0,
+                    Direction = Direction.LShape,
+                    Type = PiecesData.Type.Knight
+                });
+        }
+
+        for (int i = 2; i < 6; i += 3)
+        {
+            whiteKnights.Add(new PieceData
+                {
+                    Color = "white",
+                    Column = i,
+                    Row = 7,
+                    Direction = Direction.LShape,
+                    Type = PiecesData.Type.Knight
+                });
+        }
+
+        for (int i = 0; i < 2; i++)
+        {
+            blackPieces.Add(blackRooks[i]);
+            whitePieces.Add(whiteRooks[i]);
+
+            blackPieces.Add(blackBishops[i]);
+            whitePieces.Add(whiteBishops[i]);
+
+            blackPieces.Add(blackKnights[i]);
+            whitePieces.Add(whiteKnights[i]);
+        }
+
+        //kraljici
+        blackQueen.Add(new PieceData
+            {
+                Color = "black",
+                Column = 3,
+                Row = 0,
+                Direction = Direction.Any,
+                Type = PiecesData.Type.Queen
+            });
+
+        blackPieces.Add(blackQueen[0]);
+
+        whiteQueen.Add(new PieceData
+            {
+                Color = "white",
+                Column = 3,
+                Row = 7,
+                Direction = Direction.Any,
+                Type = PiecesData.Type.Queen
+            });
+
+        whitePieces.Add(whiteQueen[0]);
+
+        //kralja
+        blackKing.Add(new PieceData
+            {
+                Color = "black",
+                Column = 4,
+                Row = 0,
+                Direction = Direction.OneAny,
+                Type = PiecesData.Type.King
+            });
+
+        blackPieces.Add(blackKing[0]);
+
+        whiteKing.Add(new PieceData
+            {
+                Color = "white",
+                Column = 4,
+                Row = 7,
+                Direction = Direction.OneAny,
+                Type = PiecesData.Type.King
+            });
+
+        whitePieces.Add(whiteKing[0]);
+
+        //izpis seznamov ce je problem
+        /*for (int i = 0; i < blackPieces.Count; i++) {
+            Console.WriteLine(blackPieces[i].Type + " " + blackPieces[i].Row + " " + blackPieces[i].Column);
+        }
+        Console.WriteLine("________________________________________________________");
+        for (int i = 0; i < whitePieces.Count; i++)
+        {
+            Console.WriteLine(whitePieces[i].Type + " " + whitePieces[i].Row + " " + whitePieces[i].Column);
+        }*/
     }
 
-    PawnData activePawn = null;
-
+    PieceData activePiece = null;
 
     List<(int row, int column)> cellsPossible = new();
 
     //preveri kam lahko gre
-    void CheckDirectionsPawns()
+    void CheckDirections()
     {
         cellsPossible.Clear();
 
-        if (activePawn != null)
+        if (activePiece != null)
         {
-            //crni kmet poje
-            if ((activePawn.Color == black) && (IfFigureExists(activePawn.Row + 1, activePawn.Column - 1)))
+            //tu noter je treba pazit ali se figura poje in preveri na tak nacin, ali pa se premakne, ker ima prosto polje!!!!
+
+            //crni poje 1 naprej diagonalno
+            if ((activePiece.Color == black) && (activePiece.Type == PiecesData.Type.Pawn))
             {
-                var whitePawn = whitePawns.FirstOrDefault(n => n.Row == activePawn.Row + 1 && n.Column == activePawn.Column - 1);
-                if (whitePawn != null)
+                if (IfFigureExists(activePiece.Row + 1, activePiece.Column - 1))
                 {
-                    cellsPossible.Add((activePawn.Row + 1, activePawn.Column - 1));
+                    var whitePiece = whitePieces.FirstOrDefault(n => n.Row == activePiece.Row + 1 && n.Column == activePiece.Column - 1);
+                    if (whitePiece != null)
+                    {
+                        cellsPossible.Add((activePiece.Row + 1, activePiece.Column - 1));
+                    }
                 }
-            }
-            if ((activePawn.Color == black) && (IfFigureExists(activePawn.Row + 1, activePawn.Column + 1)))
-            {
-                var whitePawn = whitePawns.FirstOrDefault(n => n.Row == activePawn.Row + 1 && n.Column == activePawn.Column + 1);
-                if (whitePawn != null)
+                if (IfFigureExists(activePiece.Row + 1, activePiece.Column + 1))
                 {
-                    cellsPossible.Add((activePawn.Row + 1, activePawn.Column + 1));
+                    var whitePiece = whitePieces.FirstOrDefault(n => n.Row == activePiece.Row + 1 && n.Column == activePiece.Column + 1);
+                    if (whitePiece != null)
+                    {
+                        cellsPossible.Add((activePiece.Row + 1, activePiece.Column + 1));
+                    }
                 }
             }
 
-            //beli kmet poje
-            if ((activePawn.Color == white) && (IfFigureExists(activePawn.Row - 1, activePawn.Column - 1)))
+            //beli poje 1 naprej diagonalno
+            if ((activePiece.Color == white) && (activePiece.Type == PiecesData.Type.Pawn))
             {
-                var blackPawn = blackPawns.FirstOrDefault(n => n.Row == activePawn.Row - 1 && n.Column == activePawn.Column - 1);
-                if (blackPawn != null)
+                if (IfFigureExists(activePiece.Row - 1, activePiece.Column - 1))
                 {
-                    cellsPossible.Add((activePawn.Row - 1, activePawn.Column - 1));
+                    var blackPiece = blackPieces.FirstOrDefault(n => n.Row == activePiece.Row - 1 && n.Column == activePiece.Column - 1);
+                    if (blackPiece != null)
+                    {
+                        cellsPossible.Add((activePiece.Row - 1, activePiece.Column - 1));
+                    }
                 }
-            }
-            if ((activePawn.Color == white) && (IfFigureExists(activePawn.Row - 1, activePawn.Column + 1)))
-            {
-                var blackPawn = blackPawns.FirstOrDefault(n => n.Row == activePawn.Row - 1 && n.Column == activePawn.Column + 1);
-                if (blackPawn != null)
+                if (IfFigureExists(activePiece.Row - 1, activePiece.Column + 1))
                 {
-                    cellsPossible.Add((activePawn.Row - 1, activePawn.Column + 1));
+                    var blackPiece = blackPieces.FirstOrDefault(n => n.Row == activePiece.Row - 1 && n.Column == activePiece.Column + 1);
+                    if (blackPiece != null)
+                    {
+                        cellsPossible.Add((activePiece.Row - 1, activePiece.Column + 1));
+                    }
                 }
             }
 
-            //1 polje naprej
-            if (activePawn.Direction == PawnDirection.Down)
+            //1 polje naprej premakne
+            if ((activePiece.Type == PiecesData.Type.Pawn) || (activePiece.Type == PiecesData.Type.Rook) || (activePiece.Type == PiecesData.Type.Queen) || (activePiece.Type == PiecesData.Type.King))
             {
-                AddIfFigureNotExists(activePawn.Row + 1, activePawn.Column);
+                if (activePiece.Color == black)
+                {
+                    AddIfFigureNotExists(activePiece.Row + 1, activePiece.Column);
+                }
+                else if (activePiece.Color == white)
+                {
+                    AddIfFigureNotExists(activePiece.Row - 1, activePiece.Column);
+                }
             }
-            else if (activePawn.Direction == PawnDirection.Up)
-            {
-                AddIfFigureNotExists(activePawn.Row - 1, activePawn.Column);
-            }
+            
 
-            //za 2 naprej na zacetku
-            if ((activePawn.Row == 1) && (activePawn.Color == black) && (!IfFigureExists(2, activePawn.Column)))
+            //za 2 polja naprej na zacetku premakne
+            if (activePiece.Type == PiecesData.Type.Pawn) 
             {
-                AddIfFigureNotExists(3, activePawn.Column);
-            }
-            else if ((activePawn.Row == 6) && (activePawn.Color == white) && (!IfFigureExists(5, activePawn.Column)))
-            {
-                AddIfFigureNotExists(4, activePawn.Column);
+                if ((activePiece.Row == 1) && (activePiece.Color == black) && (!IfFigureExists(2, activePiece.Column)))
+                {
+                    AddIfFigureNotExists(3, activePiece.Column);
+                }
+                else if ((activePiece.Row == 6) && (activePiece.Color == white) && (!IfFigureExists(5, activePiece.Column)))
+                {
+                    AddIfFigureNotExists(4, activePiece.Column);
+                }
             }
         }
     }
 
     bool IfFigureExists(int row, int column)
     {
-        var blackPawn = blackPawns.FirstOrDefault(n => n.Column == column && n.Row == row);
-        var whitePawn = whitePawns.FirstOrDefault(n => n.Column == column && n.Row == row);
+        var blackPiece = blackPieces.FirstOrDefault(n => n.Column == column && n.Row == row);
+        var whitePiece = whitePieces.FirstOrDefault(n => n.Column == column && n.Row == row);
 
-        if ((blackPawn == null) && (whitePawn == null))
+        if ((blackPiece == null) && (whitePiece == null))
         {
             return false;
         }
@@ -155,10 +453,10 @@
 
     bool IfWhiteFigureExists(int row, int column)
     {
-        var blackPawn = blackPawns.FirstOrDefault(n => n.Column == column && n.Row == row);
-        var whitePawn = whitePawns.FirstOrDefault(n => n.Column == column && n.Row == row);
+        var blackPiece = blackPieces.FirstOrDefault(n => n.Column == column && n.Row == row);
+        var whitePiece = whitePieces.FirstOrDefault(n => n.Column == column && n.Row == row);
 
-        if ((blackPawn == null) && (whitePawn != null))
+        if ((blackPiece == null) && (whitePiece != null))
         {
             return true;
         }
@@ -170,10 +468,10 @@
 
     bool IfBlackFigureExists(int row, int column)
     {
-        var blackPawn = blackPawns.FirstOrDefault(n => n.Column == column && n.Row == row);
-        var whitePawn = whitePawns.FirstOrDefault(n => n.Column == column && n.Row == row);
+        var blackPiece = blackPieces.FirstOrDefault(n => n.Column == column && n.Row == row);
+        var whitePiece = whitePieces .FirstOrDefault(n => n.Column == column && n.Row == row);
 
-        if ((blackPawn != null) && (whitePawn == null))
+        if ((blackPiece != null) && (whitePiece == null))
         {
             return true;
         }
@@ -185,18 +483,14 @@
 
     void AddIfFigureNotExists(int row, int column)
     {
-
         if (!IfFigureExists(row, column))
         {
             cellsPossible.Add((row, column));
-            //Console.Write(row);
-            //Console.Write(column);
-            //Console.Write("\n");
         }
     }
 
     //premika
-    void MovePawn(int row, int column)
+    void MovePiece(int row, int column)
     {
         bool canMoveHere = cellsPossible.Contains((row, column));
         if (!canMoveHere)
@@ -207,47 +501,95 @@
         //katero figuro je treba pojest
         if (IfWhiteFigureExists(row, column) && !whiteTurn)
         {
-            var whitePawn = whitePawns.FirstOrDefault(n => n.Row == row && n.Column == column);
-            if (whitePawn != null)
+            var whitePiece = whitePieces.FirstOrDefault(n => n.Row == row && n.Column == column);
+            if (whitePiece != null)
             {
-                whitePawns.Remove(whitePawn);
+                switch(whitePiece.Type)
+                {
+                    case PiecesData.Type.Pawn:
+                        whitePawns.Remove(whitePiece);
+                        break;
+                    case PiecesData.Type.Rook:
+                        whiteRooks.Remove(whitePiece);
+                        break;
+                    case PiecesData.Type.Bishop:
+                        whiteBishops.Remove(whitePiece);
+                        break;
+                    case PiecesData.Type.Knight:
+                        whiteKnights.Remove(whitePiece);
+                        break;
+                    case PiecesData.Type.Queen:
+                        whiteQueen.Remove(whitePiece);
+                        break;
+                    //za zdaj lahko kralja pojes
+                    case PiecesData.Type.King:
+                        whiteKing.Remove(whitePiece);
+                        break;
+                }
+                whitePieces.Remove(whitePiece);
             }
         }
         else if (IfBlackFigureExists(row, column) && whiteTurn)
         {
-            var blackPawn = blackPawns.FirstOrDefault(n => n.Row == row && n.Column == column);
-            blackPawns.Remove(blackPawn);
+            var blackPiece = blackPieces.FirstOrDefault(n => n.Row == row && n.Column == column);
+
+            if (blackPiece != null)
+            {
+                switch (blackPiece.Type)
+                {
+                    case PiecesData.Type.Pawn:
+                        blackPawns.Remove(blackPiece);
+                        break;
+                    case PiecesData.Type.Rook:
+                        blackRooks.Remove(blackPiece);
+                        break;
+                    case PiecesData.Type.Bishop:
+                        blackBishops.Remove(blackPiece);
+                        break;
+                    case PiecesData.Type.Knight:
+                        blackKnights.Remove(blackPiece);
+                        break;
+                    case PiecesData.Type.Queen:
+                        blackQueen.Remove(blackPiece);
+                        break;
+                    //za zdaj lahko kralja pojes
+                    case PiecesData.Type.King:
+                        blackKing.Remove(blackPiece);
+                        break;
+                }
+                blackPieces.Remove(blackPiece);
+            }
         }
 
         //premik
-        activePawn.Column = column;
-        activePawn.Row = row;
+        activePiece.Column = column;
+        activePiece.Row = row;
 
-        activePawn = null;
+        activePiece = null;
         whiteTurn = !whiteTurn;
-        CheckDirectionsPawns();
+        CheckDirections();
     }
 
-    void PawnClicked(PawnData pawn)
+    void PieceClicked(PieceData piece)
     {
-        if (whiteTurn && pawn.Color == black)
+        if (whiteTurn && piece.Color == black)
         {
             return;
         }
-        if (!whiteTurn && pawn.Color == white)
+        if (!whiteTurn && piece.Color == white)
         {
             return;
         }
 
-        if (activePawn == pawn)
+        if (activePiece == piece)
         {
-            activePawn = null;
+            activePiece = null;
         }
         else
         {
-            activePawn = pawn;
+            activePiece = piece;
         }
 
-        CheckDirectionsPawns();
+        CheckDirections();
     }
 }

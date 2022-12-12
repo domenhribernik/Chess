@@ -1,4 +1,12 @@
 {
-  "ExpandedNodes": [],
+  "ExpandedNodes": [
+    "",
+    "\\ChessProject",
+    "\\ChessProject\\ChessProject",
+    "\\ChessProject\\ChessProject\\Components",
+    "\\ChessProject\\ChessProject\\obj",
+    "\\ChessProject\\ChessProject\\obj\\Release"
+  ],
+  "SelectedNode": "\\ChessProject\\ChessProject.sln",
   "PreviewInSolutionExplorer": false
 }
