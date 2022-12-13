@@ -1,0 +1,21 @@
+﻿.chat {
+    float: right;
+    width: 50%;
+    border: 3px gray solid;
+    padding-bottom: 10px;
+}
+
+.content {
+    font-size: 2rem;
+}
+
+input {
+    width: 90%;
+}
+
+.btn {
+    border: 2px black solid;
+    font-size: 2.5rem;
+    margin-bottom: 60px;
+    margin-left: 20px;
+}

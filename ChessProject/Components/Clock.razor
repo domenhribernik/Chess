@@ -1,0 +1,31 @@
+﻿@using System.Timers;
+@using Microsoft.AspNetCore.Components
+
+<div class="clock">
+	<span>@minutes</span>m
+	<span>@seconds</span>s
+</div>
+
+@code {
+	private Timer timer = new Timer(1000);
+	private int seconds = 0;
+	private int minutes = 10;
+
+	protected override async Task OnInitializedAsync()
+	{
+		timer.Elapsed += (sender, EventArgs) => CountDown();
+		timer.Start();
+		await base.OnInitializedAsync();
+	}
+
+	void CountDown()
+	{
+		seconds--;
+		if (seconds == -1)
+		{
+			minutes--;
+			seconds = 59;
+		}
+		InvokeAsync(StateHasChanged);
+	}
+}
