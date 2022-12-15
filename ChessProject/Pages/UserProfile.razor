@@ -1,0 +1,30 @@
+﻿@page "/userprofile"
+@using ChessProject.Services.Database
+@inject DatabaseConnection Db
+
+<h1>User Profile</h1>
+
+<p>This is my page.</p>
+
+@if (data != null)
+{
+    @foreach (var player in data)
+    {
+            <tr>
+                <td>@player.ToString()</td>
+            </tr>
+    }
+
+}
+
+@code {
+    private List<object>? data;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Db != null)
+        {
+            data = Db.ExecuteCommand("SELECT * FROM Chess.Player");
+        }
+    }
+}

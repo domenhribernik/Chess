@@ -2,13 +2,21 @@
 
 <style>
 	.boardLayout {
-		float: left;
+		display: grid;
+		grid-template-columns: 900px auto
+	}
+	.cell {
+		display: inline-block;
 	}
 </style>
 
 <div class="boardLayout">
-	<Clock></Clock>
-	<Board></Board>
-	<Clock></Clock>
+	<div class="cell">
+		<Clock></Clock>
+		<Board></Board>
+		<Clock></Clock>
+	</div>
+	<div class="cell">
+		<ChessChat></ChessChat>
+	</div>
 </div>
-<ChessChat></ChessChat>
