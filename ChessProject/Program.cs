@@ -1,4 +1,5 @@
 using ChessProject.Data;
+using ChessProject.Services;
 using ChessProject.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
@@ -11,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSignalR();
+builder.Services.AddSingleton<WeatherForecastService>();
+builder.Services.AddSingleton<PlayerService>();
 
 var app = builder.Build();
 
