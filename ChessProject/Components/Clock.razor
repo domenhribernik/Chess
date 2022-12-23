@@ -10,11 +10,11 @@
 	private Timer timer = new Timer(1000);
 	private int seconds = 0;
 	private int minutes = 10;
+	private bool stopped = true;
 
 	protected override async Task OnInitializedAsync()
 	{
 		timer.Elapsed += (sender, EventArgs) => CountDown();
-		timer.Start();
 		await base.OnInitializedAsync();
 	}
 
@@ -26,6 +26,38 @@
 			minutes--;
 			seconds = 59;
 		}
+		if (minutes == -1)
+		{
+			timer.Stop();
+			return;
+		}
+		InvokeAsync(StateHasChanged);
+	}
+
+	public void startOrStopTimer()
+	{
+		if (stopped)
+			timer.Start();
+		else
+			timer.Stop();
+		stopped = !stopped;
+	}
+
+	public void SetRapid()
+	{
+		minutes = 10;
+		InvokeAsync(StateHasChanged);
+	}
+
+	public void SetBlitz()
+	{
+		minutes = 5;
+		InvokeAsync(StateHasChanged);
+	}
+
+	public void SetBullet()
+	{
+		minutes = 1;
 		InvokeAsync(StateHasChanged);
 	}
 }

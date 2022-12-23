@@ -6,9 +6,57 @@
 	}
 </style>
 
+<GameMode @ref="GameModeRef" 
+	SetRapid="@SetRapid" 
+	SetBlitz="@SetBlitz" 
+	SetBullet="@SetBullet"/>
+
 <div class="boardLayout">
-	<Clock></Clock>
-	<Board></Board>
-	<Clock></Clock>
+	<Clock @ref="Clock1Ref"/>
+	<Board 
+		StartOrStopBlackTimer="@StartOrStopBlackTimer" 
+		StartOrStopWhiteTimer="@StartOrStopWhiteTimer"
+		FirstMove="@FirstMove"/>
+	<Clock @ref="Clock2Ref"/>
 </div>
-<ChessChat></ChessChat>
+
+<ChessChat/>
+
+@code {
+	private Clock? Clock1Ref;
+	private Clock? Clock2Ref;
+	private GameMode? GameModeRef;
+
+	void StartOrStopBlackTimer()
+	{
+		Clock1Ref.startOrStopTimer();
+	}
+
+	void StartOrStopWhiteTimer()
+	{
+		Clock2Ref.startOrStopTimer();
+	}
+
+	void SetRapid()
+	{
+		Clock1Ref.SetRapid();
+		Clock2Ref.SetRapid();
+	}
+
+	void SetBlitz()
+	{
+		Clock1Ref.SetBlitz();
+		Clock2Ref.SetBlitz();
+	}
+
+	void SetBullet()
+	{
+		Clock1Ref.SetBullet();
+		Clock2Ref.SetBullet();
+	}
+
+	void FirstMove()
+	{
+		GameModeRef.FirstMove();
+	}
+}

@@ -1,0 +1,11 @@
+﻿body {
+}
+
+.gamemode-btn {
+    height: 100px;
+    width: 200px;
+    border: none;
+    color: white;
+    background-color: green;
+    font-size: 2rem;
+}

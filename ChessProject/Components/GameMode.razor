@@ -1,0 +1,35 @@
+﻿<button @onclick="@Rapid" class="gamemode-btn">Rapid</button>
+<button @onclick="@Blitz" class="gamemode-btn">Blitz</button>
+<button @onclick="@Bullet" class="gamemode-btn">Bullet</button>
+
+@code {
+    private bool canChangeMode = true;
+    // Gamemode
+    [Parameter]
+    public EventCallback SetRapid { get; set; }
+    [Parameter]
+    public EventCallback SetBlitz { get; set; }
+    [Parameter]
+    public EventCallback SetBullet { get; set; }
+
+    private void Rapid()
+    {
+        if (canChangeMode)
+            SetRapid.InvokeAsync(null);
+    }
+    private void Blitz()
+    {
+        if (canChangeMode)
+            SetBlitz.InvokeAsync(null);
+    }
+    private void Bullet()
+    {
+        if (canChangeMode)
+            SetBullet.InvokeAsync(null);
+    }
+
+    public void FirstMove()
+    {
+        canChangeMode = false;
+    }
+}
