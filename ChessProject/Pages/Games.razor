@@ -1,0 +1,53 @@
+﻿@page "/games"
+@using ChessProject.Data
+@using ChessProject.Services
+@using Microsoft.AspNetCore.Mvc.Razor.TagHelpers
+@inject GameService gameService
+
+<h1>Games</h1>
+<h2>GetGames()</h2>
+@if (gameList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (gameList != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Game ID</th>
+                <th>Game Type ID</th>
+                <th>Player White ID</th>
+                <th>Player Black ID</th>
+                <th>TimeLeft</th>
+                <th>PlayedDate</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var game in gameList)
+            {
+                <tr>
+                    <td>@game.GameId</td>
+                    <td>@game.GameTypeId</td>
+                    <td>@game.PlayerWhiteId</td>
+                    <td>@game.PlayerBlackId</td>
+                    <td>@game.TimeLeft</td>
+                    <td>@game.PlayedDate</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No games found</p>
+}
+
+@code {
+    private Game[]? gameList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        gameList = (await gameService.GetGames()).ToArray();
+    }
+}

@@ -1,17 +1,96 @@
 ﻿@page "/userprofile"
-@    using ChessProject.Data
-@inject PlayerService players
+@using ChessProject.Data
+@using ChessProject.Services
+@inject PlayerService playerService
 
 <h1>User Profile</h1>
 
-<p>This is my page.</p>
+@if (playerList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h2>GetPlayers()</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Player Id</th>
+                <th>Player Type Id</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Total Rating</th>
+                <th>Date Created Account</th>
+                <th>Date Last Online</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var player in playerList)
+            {
+                <tr>
+                    <td>@player.PlayerId</td>
+                    <td>@player.PlayerTypeId</td>
+                    <td>@player.Username</td>
+                    <td>@player.Email</td>
+                    <td>@player.TotalRating</td>
+                    <td>@player.DateCreatedAccount.ToShortDateString()</td>
+                    <td>@player.DateLastOnline.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>  
+}
+
+<br>
+<h2>LookupPlayer()</h2>
+
+<div class="form-group">
+    <label for="PlayerId">Player Id</label>
+    <input type="text" class="form-control" id="PlayerId" placeholder="Enter Player Id" @bind-value="PlayerId" />
+</div>
+<button class="btn btn-primary" @onclick="LookupPlayer">Lookup Player</button>
+
+@if (player != null)
+{
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title">@player.Username</h5>
+            <h6 class="card-subtitle mb-2 text-muted">@player.Email</h6>
+            <p class="card-text">Total Rating: @player.TotalRating</p>
+        </div>
+    </div>
+}
+
+<br>
+<h2>DeletePlayer()</h2>
+
+<form method="get">
+    <div class="form-group">
+        <label for="PlayerId">Player Id</label>
+        <input type="text" class="form-control" id="PlayerId" placeholder="Enter Player Id" @bind-value="PlayerId" />
+    </div>
+    <button type="submit" class="btn btn-primary" @onclick="DeletePlayer">Delete Player</button>
+</form>
 
 
 @code {
-    private Player[]? players;
+    private Player[]? playerList;
+    private int PlayerId { get; set; }
+    private Player? player;
 
     protected override async Task OnInitializedAsync()
     {
-        players = await PlayerService.PlayerList();
+        playerList = (await playerService.GetPlayers()).ToArray();
+    }
+
+    private async void LookupPlayer()
+    {
+        player = (await playerService.PlayerLookup(PlayerId));
+        this.StateHasChanged();
+    }
+
+    private async void DeletePlayer()
+    {
+        await playerService.PlayerDelete(PlayerId);
     }
 }

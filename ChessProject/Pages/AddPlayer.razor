@@ -1,0 +1,48 @@
+﻿@page "/addplayer"
+@using ChessProject.Data
+@using ChessProject.Services
+@using Microsoft.AspNetCore.Mvc.Razor.TagHelpers
+@inject PlayerService playerService
+
+<h2>PlayerSave()</h2>
+
+<form>
+    <div class="form-group">
+        <label for="Username">Username</label>
+        <input type="text" class="form-control" id="Username" placeholder="Enter username" @bind-value="Username" />
+    </div>
+    <div class="form-group">
+        <label for="Email">Email</label>
+        <input type="email" class="form-control" id="Email" placeholder="Enter email" @bind-value="Email" />
+    </div>
+    <div class="form-group">
+        <label for="TotalRating">Total Rating</label>
+        <input type="text" class="form-control" id="TotalRating" placeholder="Enter Total Rating" @bind-value="TotalRating" />
+    </div>
+    <button type="submit" class="btn btn-primary" @onclick="PlayerSave">Create Player</button>
+</form>
+
+<p role="status">Test: @Test</p>
+
+@code {
+    private string? Username { get; set; }
+    private string? Email { get; set; }
+    private int TotalRating { get; set; }
+    private string? Test;
+
+    private async void PlayerSave()
+    {
+        var player = new Player
+            {
+                PlayerId = -1,
+                PlayerTypeId = 1,
+                Username = Username,
+                Email = Email,
+                TotalRating = TotalRating,
+                DateCreatedAccount = DateTime.Now,
+                DateLastOnline = DateTime.Now
+            };
+
+        Test = await playerService.PlayerSave(player);
+    }
+}

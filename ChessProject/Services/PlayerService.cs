@@ -1,5 +1,5 @@
 ﻿using ChessProject.Repositories.Interfaces;
-using ChessProject.Data
+using ChessProject.Data;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -16,10 +16,9 @@ namespace ChessProject.Services
             _playerRepository = playerRepository;
         }
 
-        public async Task<Player[]> PlayerList()
+        public async Task<List<Player>> GetPlayers()
         {
-            string json = await _playerRepository.PlayerList();
-            return JsonConvert.DeserializeObject<Player[]>(json);
+            return await _playerRepository.GetPlayers();
         }
 
         public async Task<string> PlayerSave(Player player)
@@ -27,16 +26,15 @@ namespace ChessProject.Services
             return await _playerRepository.PlayerSave(player);
         }
 
+        public async Task<Player> PlayerLookup(int playerId)
+        {
+            return await _playerRepository.PlayerLookup(playerId);
+        }
+
         public async Task<string> PlayerDelete(int playerId)
         {
             return await _playerRepository.PlayerDelete(playerId);
         }
-
-        public async Task<Player> PlayerLookup(int playerId)
-        {
-            return (Player) await _playerRepository.PlayerLookup(playerId);
-        }
-
     }
 }
 

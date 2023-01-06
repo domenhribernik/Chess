@@ -1,26 +1,17 @@
-﻿using ChessProject.Services.Database;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Data;
-using System.Data.SqlClient;
 
 namespace ChessProject.Repositories
 {
     public abstract class Repository
     {
-        private readonly IOptions<ConnectionStrings> _connectionStrings;
+        private readonly ChessDbContext _context;
 
-        /// <summary>
-        /// Vrne novo <see cref="SqlConnection"/> za povezavnje na NVAS.
-        /// </summary>
-        protected IDbConnection Database => new SqlConnection(_connectionStrings.Value.Database);
+        protected IDbConnection Database => _context.Database.GetDbConnection();
 
-        protected Repository(IOptions<ConnectionStrings> connectionStrings)
+        protected Repository(ChessDbContext context)
         {
-            if (connectionStrings is null)
-                throw new ArgumentNullException("ConnectionStrings nastavitev je null.");
-            if (string.IsNullOrEmpty(connectionStrings.Value?.Database))
-                throw new ArgumentNullException("ConnectionString NVAS je null ali prazen.");
-            _connectionStrings = connectionStrings;
+            _context = context;
         }
     }
 }

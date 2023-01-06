@@ -1,4 +1,4 @@
-﻿using ChessProject.Services.Database;
+﻿using ChessProject.Repositories.Interfaces;
 using Microsoft.Extensions.Options;
 using System.Data;
 using Dapper;
@@ -8,59 +8,69 @@ using Microsoft.EntityFrameworkCore.Storage;
 using System.Reflection.Metadata;
 using ChessProject.Data;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace ChessProject.Repositories
 {
-    public class PlayerRepository : Repository
+    public class PlayerRepository : Repository, IPlayerRepository
     {
-        public PlayerRepository(IOptions<ConnectionStrings> connectionString) : base(connectionString) { }
+        private ChessDbContext _dbContext;
 
-        public async Task<string> PlayerList(int userId)
+        public PlayerRepository(ChessDbContext dbContext) : base(dbContext)
         {
-            DynamicParameters parameters = new DynamicParameters();
-
-            parameters.Add("JSON", dbType: DbType.String, direction: ParameterDirection.Output, size: int.MaxValue);
-
-            await Database.ExecuteAsync("Chess.Player_List", parameters, commandType: CommandType.StoredProcedure);
-
-            return parameters.Get<string>("JSON");
+            _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<Player>> PlayerLookup(int playerId)
+        public async Task<List<Player>> GetPlayers()
         {
-            DynamicParameters parameters = new DynamicParameters();
-
-            parameters.Add("PlayerId", playerId);
-
-            return (IEnumerable<Player>)Database.QueryAsync<Player>("Chess.Player_Lookup", parameters, commandType: CommandType.StoredProcedure);
+            return await _dbContext.Player
+                .FromSqlRaw("EXEC Chess.Player_List")
+                .ToListAsync();
         }
+
+        public async Task<Player> PlayerLookup(int playerId)
+        {
+            try
+            {
+                var player = await _dbContext.Player
+                .FromSqlRaw("EXEC Chess.Player_Lookup @PlayerId = {0}", playerId)
+                .ToListAsync();
+                return player.SingleOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
 
         public async Task<string> PlayerSave(Player player)
         {
-            DynamicParameters parameters = new DynamicParameters();
-
-            parameters.Add("PlayerId", player.PlayerId, DbType.Int32, ParameterDirection.InputOutput);
-            parameters.Add("PlayerTypeId");
-            parameters.Add("Username", player.Username);
-            parameters.Add("Email", player.Email);
-            parameters.Add("TotalRating", player.TotalRating);
-            parameters.Add("DateCreatedAccount", player.DateCreatedAccount);
-            parameters.Add("DateLastOnline", player.DateLastOnline);
-
-            await Database.ExecuteAsync("Chess.Player_Save", parameters, commandType: CommandType.StoredProcedure);
-
-            return "Successfully saved player";
+            try
+            {
+                await _dbContext.Player
+                .FromSqlRaw("EXEC Chess.Player_Save @PlayerId = {0}, @PlayerTypeId = {1}, @Username = {2}, @Email = {3}, @TotalRating = {4}, @DateCreatedAccount = {5}, @DateLastOnline = {6}",
+                player.PlayerId, player.PlayerTypeId, player.Username, player.Email, player.TotalRating, player.DateCreatedAccount, player.DateLastOnline)
+                .ToListAsync();
+                return "Successfully saved player";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         public async Task<string> PlayerDelete(int playerId)
         {
-            DynamicParameters parameters = new DynamicParameters();
-
-            parameters.Add("PlayerId", playerId);
-
-            await Database.ExecuteAsync("Chess.Player_Delete", parameters, commandType: CommandType.StoredProcedure);
-
-            return "Successfully deleted player";
+            try
+            {
+                await _dbContext.Database.ExecuteSqlRawAsync("EXEC Chess.Player_Delete @PlayerId = {0}", playerId);
+                return "Successfully deleted player";
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
     }
 }
