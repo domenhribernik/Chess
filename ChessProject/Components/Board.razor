@@ -1,4 +1,24 @@
-﻿@using ChessProject.PiecesData
+﻿@inject NavigationManager navigationManager
+@using ChessProject.Data
+@using ChessProject.PiecesData
+
+<div>
+    @if (!playing)
+    {
+        <button hidden="@hideButton" class="play-btn" @onclick="@Play">Play</button>
+    }
+</div>
+
+<style>
+    .play-btn {
+        height: 100px;
+        width: 200px;
+        border: none;
+        color: white;
+        background-color: green;
+        font-size: 2rem;
+    }
+</style>
 
 @for (int i = 0; i < 8; i++)
 {
@@ -45,7 +65,7 @@
                 @if (pawn != null)
                 {
                     <div @onclick="() => { PieceClicked(pawn); }"
-             class="pawn @pawn.Color @(pawn == activePiece ? "active" : "")">
+                        class="pawn @pawn.Color @(pawn == activePiece ? "active" : "")">
 
                         @if (pawn.Color == "black")
                         {
@@ -61,7 +81,7 @@
                 @if (rook != null)
                 {
                     <div @onclick="() => { PieceClicked(rook); }"
-             class="rook @rook.Color @(rook == activePiece ? "active" : "")">
+                        class="rook @rook.Color @(rook == activePiece ? "active" : "")">
 
                         @if (rook.Color == "black")
                         {
@@ -77,7 +97,8 @@
                 @if (bishop != null)
                 {
                     <div @onclick="() => { PieceClicked(bishop); }"
-             class="bishop @bishop.Color @(bishop == activePiece ? "active" : "")">
+                        class="bishop @bishop.Color @(bishop == activePiece ? "active" : "")">
+
                         @if (bishop.Color == "black")
                         {
                             <img class="board-piece" src="/pictures/black_bishop.svg" />
@@ -92,7 +113,8 @@
                 @if (knight != null)
                 {
                     <div @onclick="() => { PieceClicked(knight); }"
-             class="knight @knight.Color @(knight == activePiece ? "active" : "")">
+                        class="knight @knight.Color @(knight == activePiece ? "active" : "")">
+
                         @if (knight.Color == "black")
                         {
                             <img class="board-piece" src="/pictures/black_knight.svg" />
@@ -107,7 +129,8 @@
                 @if (queen != null)
                 {
                     <div @onclick="() => { PieceClicked(queen); }"
-             class="queen @queen.Color @(queen == activePiece ? "active" : "")">
+                        class="queen @queen.Color @(queen == activePiece ? "active" : "")">
+
                         @if (queen.Color == "black")
                         {
                             <img class="board-piece" src="/pictures/black_queen.svg" />
@@ -122,7 +145,8 @@
                 @if (king != null)
                 {
                     <div @onclick="() => { PieceClicked(king); }"
-             class="king @king.Color @(king == activePiece ? "active" : "")">
+                        class="king @king.Color @(king == activePiece ? "active" : "")">
+
                         @if (king.Color == "black")
                         {
                             <img class="board-piece" src="/pictures/black_king.svg" />
@@ -139,6 +163,54 @@
 }
 
 @code {
+    Multiplayer mplayer = null;
+    bool hideButton = false;
+    bool playing = false;
+
+    async Task Play()
+    {
+        try
+        {
+            mplayer = new Multiplayer(navigationManager);
+            mplayer.CoordinatesReceived += ReceiveCoordinates;
+            await mplayer.StartAsync();
+            playing = true;
+            hideButton = true;
+        }
+        catch (Exception e)
+        {
+            string message = $"ERROR: failed to start chat {e.Message}";
+            Console.WriteLine(e.Message);
+            Console.WriteLine(e.StackTrace);
+        }
+    }
+
+    void ReceiveCoordinates(object sender, CoordinatesReceivedEventArgs e)
+    {
+        if (myTurn == true)
+        {
+            myTurn = false;
+            Console.WriteLine("Receive test");
+            Console.WriteLine("Active piece row: " + e.Row);
+            Console.WriteLine("Active piece column: " + e.Column);
+            cellsPossible.Add((e.Row, e.Column));
+            var piece = whitePieces.FirstOrDefault(n => n.Row == e.ActivePiece.Row && n.Column == e.ActivePiece.Column);
+            if (piece == null)
+            {
+                piece = blackPieces.FirstOrDefault(n => n.Row == e.ActivePiece.Row && n.Column == e.ActivePiece.Column);
+            }
+            activePiece = piece;
+            MovePiece(e.Row, e.Column);
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+    async Task SendAsync(PieceData movePiece, int row, int column)
+    {
+        await mplayer.SendAsyncCoordinates(movePiece, row, column);
+        Console.WriteLine("Send test");
+    }
+
     //list, ki bo imel liste vseh figur
     List<PieceData> piecesList = new List<PieceData>();
 
@@ -173,13 +245,13 @@
     string black = "black";
     string white = "white";
     bool whiteTurn = true;
+    bool myTurn = true;
     int moveCount = 0;
 
     bool blackHasChess = false; //crni je v šahu
     bool whiteHasChess = false;
 
     //za izpis vrst bi lahko dodav kao ascii znak 55 da bi bla crka in st.
-
     protected override void OnInitialized()
     {
         //kmeti
@@ -725,10 +797,11 @@
     public EventCallback FirstMove { get; set; }
 
     //premika
-    void MovePiece(int row, int column)
+    public void MovePiece(int row, int column)
     {
         //removeNotPossibleCells();
         bool canMoveHere = cellsPossible.Contains((row, column));
+
         if (!canMoveHere)
         {
             return;
@@ -736,10 +809,25 @@
 
         if (activePiece != null)
         {
+            if (myTurn)
+            {
+                myTurn = false;
+                PieceData sendPiece = new PieceData();
+                sendPiece.Color = activePiece.Color;
+                sendPiece.Type = activePiece.Type;
+                sendPiece.Row = activePiece.Row;
+                sendPiece.Column = activePiece.Column;
+                sendPiece.Direction = activePiece.Direction;
+                SendAsync(sendPiece, row, column);
+                System.Threading.Thread.Sleep(100);
+            }
+
+            myTurn = true;
+
             if (activePiece.Type == PiecesData.Type.Pawn) {
+                // Pregledovanje, ce je mozno izvesti en passant
                 if (!IfFigureExists(row, column) && whiteEnPassant && row == 2 && (column == activePiece.Column -1 || column == activePiece.Column + 1))
                 {
-                    Console.WriteLine("Test beli vzame en passant");
                     var blackPawn = blackPieces.FirstOrDefault(n => n.Row == row + 1 && n.Column == column);
                     if (blackPawn != null)
                     {
@@ -751,7 +839,6 @@
                 }
                 else if (!IfFigureExists(row, column) && blackEnPassant && row == 5 && (column == activePiece.Column - 1 || column == activePiece.Column + 1))
                 {
-                    Console.WriteLine("Test crni vzame en passant");
                     var whitePawn = whitePieces.FirstOrDefault(n => n.Row == row - 1 && n.Column == column);
                     if (whitePawn != null) {
                         whitePawns.Remove(whitePawn);
@@ -759,6 +846,21 @@
                     }
                     blackEnPassant = false;
                     whiteEnPassant = false;
+                }
+
+                if (!IfWhiteFigureExists(row, column) && activePiece.Color == white && row == 0)
+                {
+                    activePiece.Type = PiecesData.Type.Queen;
+                    whiteQueen.Add(activePiece);
+                    var whitePawn = whitePieces.FirstOrDefault(n => n.Row == activePiece.Row && n.Column == activePiece.Column);
+                    whitePawns.Remove(whitePawn);
+                }
+                else if (!IfWhiteFigureExists(row, column) && activePiece.Color == black && row == 7)
+                {
+                    activePiece.Type = PiecesData.Type.Queen;
+                    blackQueen.Add(activePiece);
+                    var blackPawn = blackPieces.FirstOrDefault(n => n.Row == activePiece.Row && n.Column == activePiece.Column);
+                    blackPawns.Remove(blackPawn);
                 }
             }
         }
@@ -938,10 +1040,9 @@
         //premik
         activePiece.Column = column;
         activePiece.Row = row;
-
         activePiece = null;
         whiteTurn = !whiteTurn;
-        checkIfChess();
+        //checkIfChess();
         CheckDirections();
 
         // ko igralec premakne figuro se ura ustavi in pricne odstevat nasprotniku
@@ -963,8 +1064,20 @@
         moveCount++;
     }
 
+    // funkcija se sprozi v datoteki Clock.razor ko potece cas
+    bool isTimeUp = false;
+    public void TimesUp()
+    {
+        isTimeUp = true;
+    }
+
     void PieceClicked(PieceData piece)
     {
+        if (isTimeUp)
+        {
+            while (true) {}
+        }
+
         if (whiteTurn && piece.Color == black)
         {
             return;
@@ -984,6 +1097,7 @@
         }
 
         CheckDirections();
+        InvokeAsync(StateHasChanged);
     }
 
     void MoveInLine(int row, int column)
@@ -1017,5 +1131,4 @@
             }
         }
     }        
-    }
 }

@@ -12,12 +12,15 @@
 	SetBullet="@SetBullet"/>
 
 <div class="boardLayout">
-	<Clock @ref="Clock1Ref"/>
+	<Clock @ref="Clock1Ref"
+		TimesUp="@TimesUp"/>
 	<Board 
+		@ref="BoardRef"
 		StartOrStopBlackTimer="@StartOrStopBlackTimer" 
 		StartOrStopWhiteTimer="@StartOrStopWhiteTimer"
 		FirstMove="@FirstMove"/>
-	<Clock @ref="Clock2Ref"/>
+	<Clock @ref="Clock2Ref"
+		   TimesUp="@TimesUp" />
 </div>
 
 <ChessChat/>
@@ -26,6 +29,12 @@
 	private Clock? Clock1Ref;
 	private Clock? Clock2Ref;
 	private GameMode? GameModeRef;
+	private Board? BoardRef;
+
+	void TimesUp()
+	{
+		BoardRef.TimesUp();
+	}
 
 	void StartOrStopBlackTimer()
 	{

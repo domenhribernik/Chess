@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.JSInterop;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,7 @@ app.UseEndpoints(endpoints =>
 	endpoints.MapBlazorHub();
 	endpoints.MapFallbackToPage("/_Host");
 	endpoints.MapHub<ChatHub>(ChatClient.HUBURL);
+    endpoints.MapHub<MultiplayerHub>(Multiplayer.HUBURL);
 });
 
 app.Run();

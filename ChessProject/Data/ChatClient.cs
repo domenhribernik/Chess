@@ -22,7 +22,7 @@ namespace ChessProject.Data
             if (!_started)
             {
                 _hubConnection = new HubConnectionBuilder().WithUrl(_navigationManager.ToAbsoluteUri(HUBURL)).Build();
-                Console.WriteLine("ChatClient: calling Start()");
+                Console.WriteLine("Client: calling Start()");
                 _hubConnection.On<string, string>(Messages.receive, (user, message) =>
                 {
                     HandleReceiveMessage(user, message);

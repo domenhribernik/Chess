@@ -6,11 +6,24 @@
 	<span>@seconds</span>s
 </div>
 
+<span hidden="@showSpan" class="times-up">Time has run out!</span>
+
 @code {
 	private Timer timer = new Timer(1000);
 	private int seconds = 0;
 	private int minutes = 10;
 	private bool stopped = true;
+	private bool showSpan = true;
+
+	[Parameter]
+	public EventCallback TimesUp { get; set; }
+
+	void TimeIsUp()
+	{
+		showSpan = false;
+		InvokeAsync(StateHasChanged);
+		TimesUp.InvokeAsync(null);
+	}
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -26,10 +39,10 @@
 			minutes--;
 			seconds = 59;
 		}
-		if (minutes == -1)
+		if (minutes == 0 && seconds == 0)
 		{
 			timer.Stop();
-			return;
+			TimeIsUp();
 		}
 		InvokeAsync(StateHasChanged);
 	}

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using ChessProject.PiecesData;
 using ChessProject.Data;
 
 namespace ChessProject.Hubs
@@ -10,6 +11,7 @@ namespace ChessProject.Hubs
         {
             await Clients.All.SendAsync(Messages.receive, username, message);
         }
+
         public async Task Register(string username)
         {
             var currentId = Context.ConnectionId;

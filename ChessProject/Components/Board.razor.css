@@ -11,19 +11,19 @@
 
 /*barvanje celic*/
 .row:nth-child(2n) .cell:nth-child(2n) {
-    background: tan;
+    background: #eee;
 }
 
 .row:nth-child(2n) .cell:nth-child(2n+1) {
-    background: #eee;
+    background: tan;
 }
 
 .row:nth-child(2n+1) .cell:nth-child(2n) {
-    background: #eee;
+    background: tan;
 }
 
 .row:nth-child(2n+1) .cell:nth-child(2n+1) {
-    background: tan;
+    background: #eee;
 }
 
 .pawn {
