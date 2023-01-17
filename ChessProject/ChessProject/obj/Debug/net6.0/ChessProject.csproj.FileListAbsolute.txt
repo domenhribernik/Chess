@@ -26,3 +26,8 @@ C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\D
 C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\ChessProject.genruntimeconfig.cache
 C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\ref\ChessProject.dll
 C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\scopedcss\Components\Board.razor.rz.scp.css
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\staticwebassets\msbuild.ChessProject.Microsoft.AspNetCore.StaticWebAssets.props
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\staticwebassets\msbuild.build.ChessProject.props
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.ChessProject.props
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\staticwebassets\msbuild.buildTransitive.ChessProject.props
+C:\Users\HP\Desktop\vaje\DrugiL\RPO\ChessProject\ChessProject\ChessProject\obj\Debug\net6.0\staticwebassets.pack.json
