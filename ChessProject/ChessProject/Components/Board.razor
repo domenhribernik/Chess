@@ -45,7 +45,7 @@
                 @if (pawn != null)
                 {
                     <div @onclick="() => { PieceClicked(pawn); }"
-                    class="pawn @pawn.Color @(pawn == activePiece ? "active" : "")">
+                    class="pawn @pawn.Color @(pawn == activePiece1 ? "active" : "")">
 
                         @if (pawn.Color == "black")
                         {
@@ -61,7 +61,7 @@
                 @if (rook != null)
                 {
                     <div @onclick="() => { PieceClicked(rook); }"
-                    class="rook @rook.Color @(rook == activePiece ? "active" : "")">
+                    class="rook @rook.Color @(rook == activePiece1 ? "active" : "")">
 
                         @if (rook.Color == "black")
                         {
@@ -77,7 +77,7 @@
                 @if (bishop != null)
                 {
                     <div @onclick="() => { PieceClicked(bishop); }"
-                    class="bishop @bishop.Color @(bishop == activePiece ? "active" : "")">
+                    class="bishop @bishop.Color @(bishop == activePiece1 ? "active" : "")">
                         @if (bishop.Color == "black")
                         {
                             <img class="board-piece" src="/pictures/black_bishop.svg" />
@@ -92,7 +92,7 @@
                 @if (knight != null)
                 {
                     <div @onclick="() => { PieceClicked(knight); }"
-                    class="knight @knight.Color @(knight == activePiece ? "active" : "")">
+                    class="knight @knight.Color @(knight == activePiece1 ? "active" : "")">
                         @if (knight.Color == "black")
                         {
                             <img class="board-piece" src="/pictures/black_knight.svg" />
@@ -107,7 +107,7 @@
                 @if (queen != null)
                 {
                     <div @onclick="() => { PieceClicked(queen); }"
-                    class="queen @queen.Color @(queen == activePiece ? "active" : "")">
+                    class="queen @queen.Color @(queen == activePiece1 ? "active" : "")">
                         @if (queen.Color == "black")
                         {
                             <img class="board-piece" src="/pictures/black_queen.svg" />
@@ -122,7 +122,7 @@
                 @if (king != null)
                 {
                     <div @onclick="() => { PieceClicked(king); }"
-                    class="king @king.Color @(king == activePiece ? "active" : "")">
+                    class="king @king.Color @(king == activePiece1 ? "active" : "")">
                         @if (king.Color == "black")
                         {
                             <img class="board-piece" src="/pictures/black_king.svg" />
@@ -342,24 +342,15 @@
             });
 
         whitePieces.Add(whiteKing[0]);
-
-        //izpis seznamov ce je problem
-        /*for (int i = 0; i < blackPieces.Count; i++) {
-            Console.WriteLine(blackPieces[i].Type + " " + blackPieces[i].Row + " " + blackPieces[i].Column);
-        }
-        Console.WriteLine("________________________________________________________");
-        for (int i = 0; i < whitePieces.Count; i++)
-            {
-            Console.WriteLine(whitePieces[i].Type + " " + whitePieces[i].Row + " " + whitePieces[i].Column);
-        }*/
     }
 
-    PieceData activePiece = null;
+    PieceData activePiece1 = null;
 
     List<(int row, int column)> cellsPossible = new();
+    List<(int row, int column)> cellsPossibleCheckChess = new();
 
     //preveri kam lahko gre
-    void CheckDirections()
+    void CheckDirections(PieceData activePiece)
     {
         cellsPossible.Clear();
 
@@ -410,7 +401,7 @@
             }
 
             //1 polje naprej premakne
-            if ((activePiece.Type == PiecesData.Type.Pawn) || (activePiece.Type == PiecesData.Type.Rook) || (activePiece.Type == PiecesData.Type.Queen) || (activePiece.Type == PiecesData.Type.King))
+            if ((activePiece.Type == PiecesData.Type.Pawn) || (activePiece.Type == PiecesData.Type.Rook) || (activePiece.Type == PiecesData.Type.Queen))
             {
                 if (activePiece.Color == black)
                 {
@@ -439,13 +430,39 @@
             //premik za 1 polje gor, dol, levo, desno, poje ce treba
             if ((activePiece.Type == PiecesData.Type.Rook) || (activePiece.Type == PiecesData.Type.Queen) || (activePiece.Type == PiecesData.Type.King))
             {
-                AddIfSameColorNotExists(activePiece, activePiece.Row, activePiece.Column + 1);
-                AddIfSameColorNotExists(activePiece, activePiece.Row, activePiece.Column - 1);
-                AddIfSameColorNotExists(activePiece, activePiece.Row + 1, activePiece.Column);
-                AddIfSameColorNotExists(activePiece, activePiece.Row - 1, activePiece.Column);
+                if (activePiece.Type == PiecesData.Type.King)
+                {
+                    //if ((activePiece.Type == PiecesData.Type.King) && !checkIfChessCoordinates(activePiece.Row, activePiece.Column + 1))
+                    //{
+                    AddIfSameColorNotExists(activePiece, activePiece.Row, activePiece.Column + 1);
+                    //}
+
+                    //if ((activePiece.Type == PiecesData.Type.King) && !checkIfChessCoordinates(activePiece.Row, activePiece.Column - 1))
+                    //{
+                    AddIfSameColorNotExists(activePiece, activePiece.Row, activePiece.Column - 1);
+                    //}
+
+                    //if ((activePiece.Type == PiecesData.Type.King) && !checkIfChessCoordinates(activePiece.Row + 1, activePiece.Column))
+                    //{
+                    AddIfSameColorNotExists(activePiece, activePiece.Row + 1, activePiece.Column);
+                    //}
+
+                    //if ((activePiece.Type == PiecesData.Type.King) && !checkIfChessCoordinates(activePiece.Row - 1, activePiece.Column))
+
+                    //{
+                    AddIfSameColorNotExists(activePiece, activePiece.Row - 1, activePiece.Column);
+                    //}
+                }
+                else
+                {
+                    AddIfSameColorNotExists(activePiece, activePiece.Row, activePiece.Column + 1);
+                    AddIfSameColorNotExists(activePiece, activePiece.Row, activePiece.Column - 1);
+                    AddIfSameColorNotExists(activePiece, activePiece.Row + 1, activePiece.Column);
+                    AddIfSameColorNotExists(activePiece, activePiece.Row - 1, activePiece.Column);
+                }
             }
 
-            //diagonalni premik za 1 polje, poje ce treba
+            //diagonalni premik za 1 polje, poje ce treba, ponovi vajo od zgor
             if ((activePiece.Type == PiecesData.Type.Bishop) || (activePiece.Type == PiecesData.Type.Queen) || (activePiece.Type == PiecesData.Type.King))
             {
                 AddIfSameColorNotExists(activePiece, activePiece.Row + 1, activePiece.Column + 1);
@@ -456,7 +473,7 @@
         }
     }
 
-    void checkIfChess()
+    bool checkIfChess()
     {
         blackHasChess = false;
         whiteHasChess = false;
@@ -469,19 +486,22 @@
                 break;
             }
 
-            activePiece = whitePieces[i];
-            CheckDirections();
-            for (int j = 0; j < cellsPossible.Count; j++)
+            PieceData activeHolder;
+            activeHolder = whitePieces[i];
+            if (!(activeHolder.Type == PiecesData.Type.King))
             {
-                if ((cellsPossible[j].row == blackKing[0].Row) && (cellsPossible[j].column == blackKing[0].Column))
+                CheckDirections(activeHolder);
+                for (int j = 0; j < cellsPossible.Count; j++)
                 {
-                    blackHasChess = true;
-                    Console.WriteLine("Crni mas sah!");
-                    break;
+                    if ((cellsPossible[j].row == blackKing[0].Row) && (cellsPossible[j].column == blackKing[0].Column))
+                    {
+                        blackHasChess = true;
+                        Console.WriteLine("Crni mas sah!");
+                        break;
+                    }
                 }
             }
-
-            activePiece = null;
+            //CheckDirections(activePiece1);
         }
 
         //ce ima beli sah
@@ -492,75 +512,207 @@
                 break;
             }
 
-            activePiece = blackPieces[i];
-            CheckDirections();
-            for (int j = 0; j < cellsPossible.Count; j++)
+            PieceData activeHolder;
+            activeHolder = blackPieces[i];
+            if (!(activeHolder.Type == PiecesData.Type.King))
             {
-                if ((cellsPossible[j].row == whiteKing[0].Row) && (cellsPossible[j].column == whiteKing[0].Column))
+                CheckDirections(activeHolder);
+                for (int j = 0; j < cellsPossible.Count; j++)
                 {
-                    whiteHasChess = true;
-                    Console.WriteLine("Beli mas sah!");
-                    break;
+                    if ((cellsPossible[j].row == whiteKing[0].Row) && (cellsPossible[j].column == whiteKing[0].Column))
+                    {
+                        whiteHasChess = true;
+                        Console.WriteLine("Beli mas sah!");
+                        break;
+                    }
                 }
             }
+            //CheckDirections(activePiece1);
+        }
 
-            activePiece = null;
+        if ((whiteTurn && whiteHasChess) || (!whiteTurn && blackHasChess))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
     bool checkIfChessCoordinates(int row, int column)
     {
+        blackHasChess = false;
+        whiteHasChess = false;
+
         //ce ima crni sah
-        if (whiteTurn)
-        {
-            for (int i = 0; i < whitePieces.Count; i++)
-            {
-                PieceData activeHolder = activePiece;
-                activePiece = whitePieces[i];
-                CheckDirections();
-                for (int j = 0; j < cellsPossible.Count; j++)
-                {
-                    if ((cellsPossible[j].row == row) && (cellsPossible[j].column == column))
-                    {
-                        return true;
-                    }
-                }
-
-                activePiece = activeHolder;
-            }
-        }
-
         if (!whiteTurn)
         {
-            for (int i = 0; i < blackPieces.Count; i++)
+            if (activePiece1.Type == PiecesData.Type.King)
             {
-                activePiece = blackPieces[i];
-                CheckDirections();
-                for (int j = 0; j < cellsPossible.Count; j++)
+                for (int i = 0; i < whitePieces.Count; i++)
                 {
-                    if ((cellsPossible[j].row == row) && (cellsPossible[j].column == column))
+                    if (blackHasChess)
                     {
-                        return true;
+                        break;
                     }
+
+                    PieceData activeHolder;
+                    activeHolder = whitePieces[i];
+                    if (!(activeHolder.Type == PiecesData.Type.King))
+                    {
+                        CheckDirections(activeHolder);
+                        for (int j = 0; j < cellsPossible.Count; j++)
+                        {
+                            if ((cellsPossible[j].row == row) && (cellsPossible[j].column == column))
+                            {
+                                blackHasChess = true;
+                                Console.WriteLine("Crni mas sah!");
+                                break;
+                            }
+                        }
+                    }
+                    //CheckDirections(activePiece1);
+                }
+            }
+            else 
+            {
+                int rowHolder = activePiece1.Row;
+                int columnHolder = activePiece1.Column;
+                activePiece1.Row = row;
+                activePiece1.Column = column;
+                if (checkIfChess())
+                {
+                    activePiece1.Row = rowHolder;
+                    activePiece1.Column = columnHolder;
+                    return true;
                 }
 
-                activePiece = null;
+                activePiece1.Row = rowHolder;
+                activePiece1.Column = columnHolder;
+                return false;
+            }
+
+        }
+
+        if (whiteTurn)
+        {
+            //ce ima beli sah
+            if (activePiece1.Type == PiecesData.Type.King)
+            {
+                foreach (var i in blackPieces)
+                {
+                    if (whiteHasChess)
+                    {
+                        break;
+                    }
+
+                    PieceData activeHolder;
+                    activeHolder = i;
+                    if (!(activeHolder.Type == PiecesData.Type.King))
+                    {
+                        CheckDirections(activeHolder);
+                        foreach (var j in cellsPossible)
+                        {
+                            if ((j.row == row) && (j.column == column))
+                            {
+                                whiteHasChess = true;
+                                Console.WriteLine("Beli mas sah!");
+                                break;
+                            }
+                        }
+                    }
+                    //CheckDirections(activePiece1);
+                }
+            }
+            else
+            {
+                int rowHolder = activePiece1.Row;
+                int columnHolder = activePiece1.Column;
+                activePiece1.Row = row;
+                activePiece1.Column = column;
+                //Console.WriteLine("TT1: " + activePiece1.Row + " : " + activePiece1.Column);
+                if (checkIfChess())
+                {
+                    activePiece1.Row = rowHolder;
+                    activePiece1.Column = columnHolder;
+                    //Console.WriteLine("True1: " + activePiece1.Row + " : " + activePiece1.Column);
+                    return true;
+                }
+
+                //Console.WriteLine("RH+CH = " + rowHolder + " : " + columnHolder);
+                activePiece1.Row = rowHolder;
+                activePiece1.Column = columnHolder;
+                //Console.WriteLine("RH+CH = " + rowHolder + " : " + columnHolder);
+                //Console.WriteLine("False1: " + activePiece1.Row + " : " + activePiece1.Column);
+                return false;
             }
         }
 
-        return false;
+        if ((whiteTurn && whiteHasChess) || (!whiteTurn && blackHasChess))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
-    /*
+
     void removeNotPossibleCells()
     {
-        for (int i = 0; i < cellsPossible.Count; i++)
+        List<(int row, int column)> cellsToRemove = new();
+        List<(int row, int column)> celPosHolder = new();
+        //CheckDirections(activePiece1);
+        //Console.WriteLine(activePiece1.Type + "  : " + activePiece1.Color);
+        celPosHolder = cellsPossible.ToList();
+        int cellCount = cellsPossible.Count;
+        foreach (var f in celPosHolder.ToList())
         {
-            if (checkIfChessCoordinates(cellsPossible[i].row, cellsPossible[i].column))
+            //Console.WriteLine("L1: " + activePiece1.Type + "  : " + activePiece1.Color);
+            //Console.WriteLine("PL1: " +f.row  +" : "+ f.column);
+            //Console.WriteLine("size: " + celPosHolder.Count + "  ; index: " + f);
+            /*if (activePiece1.Type == PiecesData.Type.King)
             {
-                cellsPossible.Remove(cellsPossible[i]);
+
+            }*/
+            if (checkIfChessCoordinates(f.row, f.column))
+            {
+                //Console.WriteLine("F1: " + f.row + "  : " + f.column);
+                //Console.WriteLine("size: " + celPosHolder.Count + "  ; index: " + f);
+                //Console.WriteLine("Problem: " + tmpList[f].row + " : " + tmpList[f].column);
+                cellsToRemove.Add(f);//(celPosHolder[f].row, celPosHolder[f].column)
             }
         }
-    }*/
+
+
+
+        CheckDirections(activePiece1);
+        /*
+        foreach (var c in cellsToRemove)
+        {
+            Console.WriteLine("C2R: " + c);
+        }
+        foreach (var c in cellsPossible)
+        {
+            Console.WriteLine("Pos: " + c);
+        }*/
+
+        foreach (var i in cellsPossible.ToList())
+        {
+            foreach (var j in cellsToRemove.ToList())
+            {
+                //Console.WriteLine("IF: " + i + " == " + j);
+                if (i == j)
+                {
+                    //Console.WriteLine("REMOVE IT!!!");
+                    cellsPossible.Remove(j);
+                    break;
+                }
+            }
+        }
+
+    }
 
     bool IfFigureExists(int row, int column)
     {
@@ -630,13 +782,23 @@
     //premika
     void MovePiece(int row, int column)
     {
-        //removeNotPossibleCells();
+        /*
+        for (int i = 0; i < cellsPossible.Count; i++)
+        {
+            Console.WriteLine("cell " + i + "  size: " + cellsPossible.Count + "  ;  " + cellsPossible[i].row + "  :  " + cellsPossible[i].column);
+        }
+        removeNotPossibleCells();
+        for (int i = 0; i < cellsPossible.Count; i++)
+        {
+            Console.WriteLine("11cell " + i + "  size: " + cellsPossible.Count + "  ;  " + cellsPossible[i].row + "  :  " + cellsPossible[i].column);
+        }*/
         bool canMoveHere = cellsPossible.Contains((row, column));
         if (!canMoveHere)
         {
+            //Console.WriteLine("Ne more: " + row + " : " + column);
             return;
         }
-
+        //Console.WriteLine("Lahko");
         //katero figuro je treba pojest
         if (IfWhiteFigureExists(row, column) && !whiteTurn)
         {
@@ -701,13 +863,13 @@
         }
 
         //premik
-        activePiece.Column = column;
-        activePiece.Row = row;
+        activePiece1.Column = column;
+        activePiece1.Row = row;
 
-        activePiece = null;
+        activePiece1 = null;
         whiteTurn = !whiteTurn;
         checkIfChess();
-        CheckDirections();
+        CheckDirections(activePiece1);
     }
 
     void PieceClicked(PieceData piece)
@@ -721,15 +883,15 @@
             return;
         }
 
-        if (activePiece == piece)
+        if (activePiece1 == piece)
         {
-            activePiece = null;
+            activePiece1 = null;
         }
         else
         {
-            activePiece = piece;
+            activePiece1 = piece;
         }
 
-        CheckDirections();
+        CheckDirections(activePiece1);
     }
 }
