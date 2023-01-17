@@ -65,7 +65,7 @@
                 @if (pawn != null)
                 {
                     <div @onclick="() => { PieceClicked(pawn); }"
-                        class="pawn @pawn.Color @(pawn == activePiece ? "active" : "")">
+                        class="pawn @pawn.Color @(pawn == activePiece1 ? "active" : "")">
 
                         @if (pawn.Color == "black")
                         {
@@ -81,7 +81,7 @@
                 @if (rook != null)
                 {
                     <div @onclick="() => { PieceClicked(rook); }"
-                        class="rook @rook.Color @(rook == activePiece ? "active" : "")">
+                        class="rook @rook.Color @(rook == activePiece1 ? "active" : "")">
 
                         @if (rook.Color == "black")
                         {
@@ -97,7 +97,7 @@
                 @if (bishop != null)
                 {
                     <div @onclick="() => { PieceClicked(bishop); }"
-                        class="bishop @bishop.Color @(bishop == activePiece ? "active" : "")">
+                        class="bishop @bishop.Color @(bishop == activePiece1 ? "active" : "")">
 
                         @if (bishop.Color == "black")
                         {
@@ -113,7 +113,7 @@
                 @if (knight != null)
                 {
                     <div @onclick="() => { PieceClicked(knight); }"
-                        class="knight @knight.Color @(knight == activePiece ? "active" : "")">
+                        class="knight @knight.Color @(knight == activePiece1 ? "active" : "")">
 
                         @if (knight.Color == "black")
                         {
@@ -129,7 +129,7 @@
                 @if (queen != null)
                 {
                     <div @onclick="() => { PieceClicked(queen); }"
-                        class="queen @queen.Color @(queen == activePiece ? "active" : "")">
+                        class="queen @queen.Color @(queen == activePiece1 ? "active" : "")">
 
                         @if (queen.Color == "black")
                         {
@@ -145,7 +145,7 @@
                 @if (king != null)
                 {
                     <div @onclick="() => { PieceClicked(king); }"
-                        class="king @king.Color @(king == activePiece ? "active" : "")">
+                        class="king @king.Color @(king == activePiece1 ? "active" : "")">
 
                         @if (king.Color == "black")
                         {
@@ -199,7 +199,7 @@
             {
                 piece = blackPieces.FirstOrDefault(n => n.Row == e.ActivePiece.Row && n.Column == e.ActivePiece.Column);
             }
-            activePiece = piece;
+            activePiece1 = piece;
             MovePiece(e.Row, e.Column);
             InvokeAsync(StateHasChanged);
         }
@@ -939,7 +939,7 @@
             }
 
             myTurn = true;
-            /*
+            
             if (activePiece1.Type == PiecesData.Type.Pawn) {
                 // Pregledovanje, ce je mozno izvesti en passant
                 if (!IfFigureExists(row, column) && whiteEnPassant && row == 2 && (column == activePiece1.Column -1 || column == activePiece1.Column + 1))
@@ -953,7 +953,7 @@
                     whiteEnPassant = false;
                     blackEnPassant = false;
                 }
-                else if (!IfFigureExists(row, column) && blackEnPassant && row == 5 && (column == activePiece.Column - 1 || column == activePiece.Column + 1))
+                else if (!IfFigureExists(row, column) && blackEnPassant && row == 5 && (column == activePiece1.Column - 1 || column == activePiece1.Column + 1))
                 {
                     var whitePawn = whitePieces.FirstOrDefault(n => n.Row == row - 1 && n.Column == column);
                     if (whitePawn != null) {
@@ -971,14 +971,14 @@
                     var whitePawn = whitePieces.FirstOrDefault(n => n.Row == activePiece1.Row && n.Column == activePiece1.Column);
                     whitePawns.Remove(whitePawn);
                 }
-                else if (!IfWhiteFigureExists(row, column) && activePiece.Color == black && row == 7)
+                else if (!IfWhiteFigureExists(row, column) && activePiece1.Color == black && row == 7)
                 {
-                    activePiece.Type = PiecesData.Type.Queen;
-                    blackQueen.Add(activePiece);
-                    var blackPawn = blackPieces.FirstOrDefault(n => n.Row == activePiece.Row && n.Column == activePiece.Column);
+                    activePiece1.Type = PiecesData.Type.Queen;
+                    blackQueen.Add(activePiece1);
+                    var blackPawn = blackPieces.FirstOrDefault(n => n.Row == activePiece1.Row && n.Column == activePiece1.Column);
                     blackPawns.Remove(blackPawn);
                 }
-            }*/
+            }
         }
 
         //katero figuro je treba pojest
