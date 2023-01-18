@@ -1,0 +1,245 @@
+﻿@page "/games"
+@using ChessProject.Data
+@using ChessProject.Services
+@using Microsoft.AspNetCore.Mvc.Razor.TagHelpers
+@inject GameService gameService
+@inject GameChatService gameChatService
+
+<h1>Games</h1>
+<h2>GetGames()</h2>
+@if (gameList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (gameList != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Game ID</th>
+                <th>Game Type</th>
+                <th>Player White</th>
+                <th>Player Black</th>
+                <th>Time Left White</th>
+                <th>Time Left Black</th>
+                <th>Final Position</th>
+                <th>Played Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var game in gameList)
+            {
+                <tr>
+                    <td>@game.GameId</td>
+                    <td>@game.GameType</td>
+                    <td>@game.UsernameWhite</td>
+                    <td>@game.UsernameBlack</td>
+                    <td>@game.TimeLeftWhite</td>
+                    <td>@game.TimeLeftBlack</td>
+                    <td>@game.FinalPosition</td>
+                    <td>@game.PlayedDate</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No games found</p>
+}
+
+<br />
+<h2>GetPlayerGames()</h2>
+
+<div class="form-group">
+    <label for="PlayerId">Player Id</label>
+    <input type="text" class="form-control" id="PlayerId" placeholder="Enter Player Id" @bind-value="PlayerId" />
+</div>
+<button class="btn btn-primary" @onclick="GetPlayerGames">Get Player Games</button>
+
+
+@if (gamePlayerList != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Game ID</th>
+                <th>Game Type</th>
+                <th>Player White</th>
+                <th>Player Black</th>
+                <th>Time Left White</th>
+                <th>Time Left Black</th>
+                <th>Final Position</th>
+                <th>Played Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var game in gamePlayerList)
+            {
+                <tr>
+                    <td>@game.GameId</td>
+                    <td>@game.GameType</td>
+                    <td>@game.UsernameWhite</td>
+                    <td>@game.UsernameBlack</td>
+                    <td>@game.TimeLeftWhite</td>
+                    <td>@game.TimeLeftBlack</td>
+                    <td>@game.FinalPosition</td>
+                    <td>@game.PlayedDate</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No games found</p>
+}
+
+<br />
+<h2>GameLookup()</h2>
+
+<div class="form-group">
+    <label for="GameId">GameId</label>
+    <input type="text" class="form-control" id="GameId" placeholder="Enter Game Id" @bind-value="GameId" />
+</div>
+<button class="btn btn-primary" @onclick="LookupGame">Lookup Game</button>
+
+@if (game != null)
+{
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title">Game #@game.GameId</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Game Type: @game.GameType</h6>
+            <p class="card-text">
+                Players:
+                White: @game.UsernameWhite
+                Black: @game.UsernameBlack
+            </p>
+            <p class="card-text">
+                Time Remaining:
+                White: @game.TimeLeftWhite
+                Black: @game.TimeLeftBlack
+            </p>
+            <p class="card-text">Final Position: @game.FinalPosition</p>
+            <p class="card-text">Played Date: @game.PlayedDate</p>
+        </div>
+    </div>
+}
+
+<br />
+<h2>GameSave()</h2>
+
+<div class="form-group">
+    <label for="GameTypeId">Game Type Id</label>
+    <input type="text" class="form-control" id="GameTypeId" placeholder="Enter Game Type Id" @bind-value="GameTypeId" />
+</div>
+<div class="form-group">
+    <label for="PlayerWhiteId">White Player Id</label>
+    <input type="text" class="form-control" id="PlayerWhiteId" placeholder="Enter White Player Id" @bind-value="PlayerWhiteId" />
+</div>
+<div class="form-group">
+    <label for="PlayerBlackId">Black Player Id</label>
+    <input type="text" class="form-control" id="PlayerBlackId" placeholder="Enter Black Player Id" @bind-value="PlayerBlackId" />
+</div>
+<div class="form-group">
+    <label for="TimeLeftWhite">Time Left (White)</label>
+    <input type="text" class="form-control" id="TimeLeftWhite" placeholder="Enter Time Left (White)" @bind-value="TimeLeftWhite" />
+</div>
+<div class="form-group">
+    <label for="TimeLeftBlack">Time Left (Black)</label>
+    <input type="text" class="form-control" id="TimeLeftBlack" placeholder="Enter Time Left (Black)" @bind-value="TimeLeftBlack" />
+</div>
+<div class="form-group">
+    <label for="FinalPosition">Final Position</label>
+    <input type="text" class="form-control" id="FinalPosition" placeholder="Enter Final Position" @bind-value="FinalPosition" />
+</div>
+<button class="btn btn-primary" @onclick="GameSave">Create Game</button>
+
+@if (Test != null)
+{
+    <p role="status">@Test</p>
+}
+
+<br />
+<h2>GetGameChats()</h2>
+
+<div class="form-group">
+    <label for="GameChatId">Game ID</label>
+    <input type="text" class="form-control" id="GameChatId" placeholder="Enter Game ID" @bind-value="GameChatId" />
+</div>
+<button class="btn btn-primary" @onclick="GetGameChats">Load Chats</button>
+
+@if (gameChats != null)
+{
+    <table class="table">
+        <tbody>
+            @foreach (var chat in gameChats)
+            {
+                <tr>
+                    <td>@chat.GameChatId</td>
+                    <td>@chat.GameId</td>
+                    <td>@chat.Username</td>
+                    <td>@chat.Chat</td>
+                    <td>@chat.SendingTime</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Game[]? gameList;
+    private Game[]? gamePlayerList;
+    private int GameId { get; set; }
+    private int PlayerId { get; set; }
+    private int GameTypeId { get; set; }
+    private int PlayerWhiteId { get; set; }
+    private int PlayerBlackId { get; set; }
+    private int TimeLeftWhite { get; set; }
+    private int TimeLeftBlack { get; set; }
+    private string? FinalPosition { get; set; }
+    private Game? game;
+    private string? Test;
+
+    private GameChat[]? gameChats;
+    private int GameChatId { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        gameList = (await gameService.GetGames()).ToArray();
+    }
+
+    private async void GetPlayerGames()
+    {
+        gamePlayerList = (await gameService.GetPlayerGames(PlayerId)).ToArray();
+        this.StateHasChanged();
+    }
+
+    private async void LookupGame()
+    {
+        game = (await gameService.GameLookup(GameId));
+        this.StateHasChanged();
+    }
+
+    private async void GameSave() {
+        var game = new Game
+            {
+                GameId = -1,
+                GameTypeId = GameTypeId,
+                PlayerWhiteId = PlayerWhiteId,
+                PlayerBlackId = PlayerBlackId,
+                TimeLeftWhite = TimeLeftWhite,
+                TimeLeftBlack = TimeLeftBlack,
+                FinalPosition = FinalPosition,
+                PlayedDate = DateTime.Now
+            };
+
+        Test = await gameService.GameSave(game);
+        gameList = (await gameService.GetGames()).ToArray();
+        this.StateHasChanged();
+    }
+
+    private async void GetGameChats() {
+        gameChats = (await gameChatService.GetGameChats(GameChatId)).ToArray();
+    }
+}

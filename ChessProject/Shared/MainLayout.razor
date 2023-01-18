@@ -1,19 +1,27 @@
 ﻿@inherits LayoutComponentBase
-
+@inject Blazored.SessionStorage.ISessionStorageService session
 <PageTitle>ChessProject</PageTitle>
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+    @if (permission == "administrator") {
+        <div class="sidebar">
+            <NavMenu />
+        </div>
+    }
 
     <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-
+        <HeaderMenu />
         <article class="content px-4">
             @Body
         </article>
     </main>
 </div>
+
+@code {
+    private string? permission;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        permission = await session.GetItemAsync<string>("Premission");
+        StateHasChanged();
+    }
+}

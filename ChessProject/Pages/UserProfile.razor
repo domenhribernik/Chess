@@ -1,0 +1,245 @@
+﻿@page "/userprofile"
+@using ChessProject.Data
+@using ChessProject.Services
+@inject PlayerService playerService
+@inject RatingService ratingService
+
+<h1>User Profile</h1>
+
+@if (playerList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <h2>GetPlayers()</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Player ID</th>
+                <th>Player Type</th>
+                <th>Username</th>
+                <th>Hash</th>
+                <th>Salt</th>
+                <th>Email</th>
+                <th>Total Rating</th>
+                <th>Date Created Account</th>
+                <th>Date Last Online</th>
+                <th>Active</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var player in playerList)
+            {
+                <tr>
+                    <td>@player.PlayerId</td>
+                    <td>@player.PlayerType</td>
+                    <td>@player.Username</td>
+                    <td>@player.PassHash</td>
+                    <td>@player.Salt</td>
+                    <td>@player.Email</td>
+                    <td>@player.TotalRating</td>
+                    <td>@player.DateCreatedAccount.ToShortDateString()</td>
+                    <td>@player.DateLastOnline.ToShortDateString()</td>
+                    <td>@player.Active</td>
+                </tr>
+            }
+        </tbody>
+    </table>  
+}
+
+<br/>
+<h2>LookupPlayer()</h2>
+
+<div class="form-group">
+    <label for="PlayerId">Player Id</label>
+    <input type="text" class="form-control" id="PlayerId" placeholder="Enter Player Id" @bind-value="PlayerId" />
+</div>
+<button class="btn btn-primary" @onclick="LookupPlayer">Lookup Player</button>
+
+@if (player != null)
+{
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title">@player.Username</h5>
+            <h6 class="card-subtitle mb-2 text-muted">@player.Email</h6>
+            <p class="card-text">Total Rating: @player.TotalRating</p>
+        </div>
+    </div>
+}
+
+<br />
+<h2>SaveRating()</h2>
+
+
+<div class="form-group">
+    <label for="PlayerRatingSave">Player ID</label>
+    <input type="number" class="form-control" id="PlayerRatingSave" @bind-value="PlayerRatingSave" />
+</div>
+<div class="form-group">
+    <label for="RatingTypeId">Rating Type ID</label>
+    <input type="number" class="form-control" id="RatingTypeId" @bind-value="RatingTypeId" />
+</div>
+<div class="form-group">
+    <label for="Rating">Rating</label>
+    <input type="number" class="form-control" id="Rating" @bind-value="Rating" />
+</div>
+<div class="form-group">
+    <label for="NumberOfGames">Number of Games</label>
+    <input type="number" class="form-control" id="NumberOfGames" @bind-value="NumberOfGames" />
+</div>
+<button class="btn btn-primary" @onclick="SaveRating">Save Rating</button>
+
+@if (Test1 != null)
+{
+    <p role="status">@Test1</p>
+}
+
+<br />
+<h2>LookupPlayerRating()</h2>
+
+<div class="form-group">
+    <label for="RatingPlayerId">Player Id</label>
+    <input type="text" class="form-control" id="RatingPlayerId" placeholder="Enter Player Id" @bind-value="RatingPlayerId" />
+</div>
+<button class="btn btn-primary" @onclick="LookupPlayerRating">Lookup Player Rating</button>
+
+@if (playerRating != null)
+{
+    @foreach (var rating in playerRating)
+    {
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">Player Rating</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Player ID: @rating.PlayerId</h6>
+                <p class="card-text">Rating Type: @rating.RatingType</p>
+                <p class="card-text">Rating: @rating.Rating</p>
+                <p class="card-text">Number of Games: @rating.NumberOfGames</p>
+            </div>
+        </div>
+    }
+}
+
+
+<br/>
+<h2>PlayerSave()</h2>
+
+<div class="form-group">
+    <label for="Username">Username</label>
+    <input type="text" class="form-control" id="Username" placeholder="Enter username" @bind-value="Username" />
+</div>
+<div class="form-group">
+    <label for="Password">Password</label>
+    <input type="text" class="form-control" id="Password" placeholder="Enter password" @bind-value="Password" />
+</div>
+<div class="form-group">
+    <label for="Email">Email</label>
+    <input type="email" class="form-control" id="Email" placeholder="Enter email" @bind-value="Email" />
+</div>
+<div class="form-group">
+    <label for="TotalRating">Total Rating</label>
+    <input type="text" class="form-control" id="TotalRating" placeholder="Enter Total Rating" @bind-value="TotalRating" />
+</div>
+<button class="btn btn-primary" @onclick="PlayerSave">Create Player</button>
+
+@if (Test2 != null) {
+    <p role="status">@Test2</p>
+}
+
+<br />
+<h2>DeletePlayer()</h2>
+
+<div class="form-group">
+    <label for="DeletePlayerId">Player Id</label>
+    <input type="text" class="form-control" id="DeletePlayerId" placeholder="Enter Player Id" @bind-value="DeletePlayerId" />
+</div>
+<button class="btn btn-primary" @onclick="DeletePlayer">Delete Player</button>
+
+
+@code {
+    private Player[]? playerList;
+    private int PlayerId { get; set; }
+    private Player? player;
+    private int RatingPlayerId { get; set; }
+    private int DeletePlayerId { get; set; }
+    private PlayerRating[]? playerRating;
+
+    private int PlayerRatingSave { get; set; }
+    private int RatingTypeId { get; set; }
+    private int Rating { get; set; }
+    private int NumberOfGames { get; set; }
+
+    private string? Username { get; set; }
+    private string? Password { get; set; }
+    private string? Email { get; set; }
+    private int TotalRating { get; set; }
+    private string? Test1;
+    private string? Test2;
+
+    private string? PassHash;
+    private string? Salt;
+
+    protected override async Task OnInitializedAsync()
+    {
+        playerList = (await playerService.GetPlayers()).ToArray();
+    }
+
+    private void EncodePassword() {
+        PassHash = Password;
+        Salt = Password[0].ToString();
+    }
+
+    private async void LookupPlayer()
+    {
+        player = (await playerService.PlayerLookup(PlayerId));
+        this.StateHasChanged();
+    }
+
+    private async void SaveRating()
+    {
+        var rating = new PlayerRating
+            {
+                PlayerRatingId = -1,
+                PlayerId = PlayerRatingSave,
+                RatingTypeId = RatingTypeId,
+                Rating = Rating,
+                NumberOfGames = NumberOfGames
+            };
+
+        Test1 = await ratingService.RatingSave(rating);
+        this.StateHasChanged();
+    }
+
+    private async void LookupPlayerRating() {
+        playerRating = (await ratingService.RatingLookup(RatingPlayerId)).ToArray();
+        this.StateHasChanged();
+    }
+
+    private async void PlayerSave()
+    {
+        EncodePassword();
+        var player = new Player
+            {
+                PlayerId = -1,
+                PlayerTypeId = 1,
+                Username = Username,
+                Email = Email,
+                PassHash = PassHash,
+                Salt = Salt,
+                TotalRating = TotalRating,
+                DateCreatedAccount = DateTime.Now,
+                DateLastOnline = DateTime.Now,
+                Active = 1
+            };
+
+        Test2 = await playerService.PlayerSave(player);
+        playerList = (await playerService.GetPlayers()).ToArray();
+        this.StateHasChanged();
+    }
+
+    private async void DeletePlayer()
+    {
+        await playerService.PlayerDelete(DeletePlayerId);
+        StateHasChanged();
+    }
+}

@@ -1,0 +1,34 @@
+﻿@using ChessProject.Data
+@inject Blazored.SessionStorage.ISessionStorageService session
+@inject NavigationManager navigationManager
+
+<div class="top-row px-4">
+    @if (sessionUser == null)
+    {
+        <NavLink class="nav-link" href="login" Match="NavLinkMatch.All"> Log in </NavLink>
+        <NavLink class="nav-link" href="register" Match="NavLinkMatch.All"> Register </NavLink>
+    }
+    else
+    {
+        <NavLink class="nav-link" href="profile" Match="NavLinkMatch.All"> @sessionUser </NavLink>
+        <NavLink class="nav-link" href="/" @onclick="Logout"> Log out </NavLink>
+    }
+
+</div>
+
+@code {
+    private string? sessionUser;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        sessionUser = await session.GetItemAsync<string>("SessionUser");
+        StateHasChanged();
+    }
+
+    private async void Logout()
+    {
+        await session.ClearAsync();
+        navigationManager.NavigateTo("/");
+        StateHasChanged();
+    }
+}

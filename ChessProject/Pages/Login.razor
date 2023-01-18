@@ -1,0 +1,78 @@
+﻿@page "/login"
+@using ChessProject.Data
+@using ChessProject.Services
+@using System.Security.Cryptography;
+@using System.Text
+@inject PlayerService playerService
+@inject RatingService ratingService
+@inject NavigationManager navigationManager
+@inject Blazored.SessionStorage.ISessionStorageService session
+
+<style>
+    input {
+        display: inline-block;
+        padding: 5px 10px;
+        margin: 5px 0px;
+        width: 200px;
+        border-radius: 15px
+    }
+
+    label {
+        width: 100px;
+        font-size: 1.1rem;
+    }
+</style>
+
+<h3>Log in</h3>
+
+<div class="form-group">
+    <label for="Username">Username</label>
+    <input type="text" id="Username" placeholder="Enter username" @bind-value="Username" />
+</div>
+<div class="form-group">
+    <label for="Password">Password</label>
+    <input type="password" id="Password" placeholder="Enter password" @bind-value="Password" />
+</div>
+<button class="btn btn-primary" @onclick="PlayerLogin">Log in</button>
+
+@code {
+    private string? Username { get; set; }
+    private string? Password { get; set; }
+    private string? PassHash;
+    private string? Salt;
+    private bool ValidPassword;
+
+    private void EncodePassword()
+    {
+        byte[] storedSaltBytes = Convert.FromBase64String(Salt);
+        byte[] storedHashBytes = Convert.FromBase64String(PassHash);
+        byte[] inputPasswordBytes = Encoding.UTF8.GetBytes(Password);
+        byte[] inputPasswordWithSalt = new byte[inputPasswordBytes.Length + storedSaltBytes.Length];
+        Buffer.BlockCopy(inputPasswordBytes, 0, inputPasswordWithSalt, 0, inputPasswordBytes.Length);
+        Buffer.BlockCopy(storedSaltBytes, 0, inputPasswordWithSalt, inputPasswordBytes.Length, storedSaltBytes.Length);
+        using (var sha256 = new SHA256CryptoServiceProvider())
+        {
+            byte[] inputHashedPassword = sha256.ComputeHash(inputPasswordWithSalt);
+            ValidPassword = storedHashBytes.SequenceEqual(inputHashedPassword);
+        }
+    }
+
+    private async void PlayerLogin()
+    {
+        Player p = await playerService.PlayerLogin(Username);
+        if (p.Active == 0) {
+            navigationManager.NavigateTo("/");
+        }
+        Salt = p.Salt;
+        PassHash = p.PassHash;
+        EncodePassword();
+        if (ValidPassword)
+        {
+            await session.SetItemAsync("UserId", p.PlayerId);
+            await session.SetItemAsync("SessionUser", Username);
+            await session.SetItemAsync("Premission", p.PlayerType);
+        }
+        StateHasChanged();
+        navigationManager.NavigateTo("/");
+    }
+}

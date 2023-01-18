@@ -1,0 +1,164 @@
+﻿@page "/profile"
+@using ChessProject.Data
+@using ChessProject.Services
+@inject PlayerService playerService
+@inject RatingService ratingService
+@inject GameService gameService
+@inject Blazored.SessionStorage.ISessionStorageService session
+
+<style>
+    input {
+        display: inline-block;
+        padding: 5px 10px;
+        margin: 5px 0px;
+        width: 200px;
+        border-radius: 15px
+    }
+
+    label {
+        width: 100px;
+        font-size: 1.1rem;
+    }
+</style>
+
+<h3>Profile</h3>
+
+@if (player != null)
+{
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title">@player.Username</h5>
+            <h6 class="card-subtitle mb-2 text-muted">@player.Email</h6>
+            <p class="card-text">Total Rating: @player.TotalRating</p>
+        </div>
+    </div>
+}
+else {
+    <p><em>Loading...</em></p>
+}
+
+@if (playerRating != null)
+{
+    
+        <div class="card mt-2">
+            <div class="card-body">
+                @foreach (var rating in playerRating) {
+                <h5 class="card-title">@rating.RatingType: @rating.Rating   <em>(@rating.NumberOfGames games)</em></h5>
+                }
+            </div>   
+        </div>
+
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
+
+@if (gameList != null)
+{
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Game Type</th>
+                <th>White</th>
+                <th>Black</th>
+                <th>Time Left White</th>
+                <th>Time Left Black</th>
+                <th>Final Position</th>
+                <th>Played Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var game in gameList)
+            {
+                <tr>
+                    <td>@game.GameType</td>
+                    <td>@game.UsernameWhite</td>
+                    <td>@game.UsernameBlack</td>
+                    <td>@game.TimeLeftWhite</td>
+                    <td>@game.TimeLeftBlack</td>
+                    <td>@game.FinalPosition</td>
+                    <td>@game.PlayedDate</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
+
+<div style="border: 1px solid lightgray; padding: 5px; border-radius: 5px; margin-top: 5px">
+    <div class="form-group">
+        <label style="padding-top:10px" for="Username">Username</label>
+        <input type="text" id="Username" placeholder="Enter username" @bind-value="Username" />
+    </div>
+    <div class="form-group">
+        <label style="padding-top:10px" for="Password">Password</label>
+        <input type="text" id="Password" placeholder="Enter password" @bind-value="Password" />
+    </div>
+    <br />
+    <button class="btn btn-primary" @onclick="PlayerUpdate">Update</button>
+    <br />
+    <br />
+    <button type="submit" class="btn btn-danger" @onclick="DeletePlayer">Delete Player</button>
+</div>
+@code {
+    private int playerId;
+    private Player player;
+    private PlayerRating[]? playerRating;
+    private Game[]? gameList;
+    private string? Username { get; set; }
+    private string? Password { get; set; }
+    private string? PassHash { get; set; }
+    private string? Salt { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        playerId = int.Parse(await session.GetItemAsync<string>("UserId"));
+        player = await playerService.PlayerLookup(playerId);
+        playerRating = (await ratingService.RatingLookup(playerId)).ToArray();
+        gameList = (await gameService.GetPlayerGames(playerId)).ToArray();
+        this.StateHasChanged();
+        StateHasChanged();
+    }
+
+    private void EncodePassword()
+    {
+        PassHash = Password;
+        Salt = Password[0].ToString();
+    }
+
+    private async void PlayerUpdate()
+    {
+        EncodePassword();
+        var newPlayer = new Player
+            {
+                PlayerId = playerId,
+                PlayerTypeId = player.PlayerTypeId,
+                Username = player.Username,
+                Email = player.Email,
+                PassHash = PassHash,
+                Salt = Salt,
+                TotalRating = player.TotalRating,
+                DateCreatedAccount = DateTime.Now,
+                DateLastOnline = DateTime.Now,
+                Active = 1
+            };
+
+        if(Username != null) {
+            newPlayer.Username = Username;
+        }
+        await playerService.PlayerSave(newPlayer);
+        player = await playerService.PlayerLookup(playerId);
+        this.StateHasChanged();
+    }
+
+    private async void DeletePlayer()
+    {
+        await playerService.PlayerDelete(playerId);
+    }
+}

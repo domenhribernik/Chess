@@ -1,17 +1,41 @@
 using ChessProject.Data;
+using ChessProject.Services;
 using ChessProject.Hubs;
+using ChessProject.Repositories.Interfaces;
+using ChessProject.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR;
+using System.Configuration;
+using Microsoft.EntityFrameworkCore;
+using Blazored.SessionStorage;
 using Microsoft.JSInterop;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var config = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddEnvironmentVariables()
+    .Build();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSignalR();
+builder.Services.AddBlazoredSessionStorage();
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+builder.Services.AddScoped<PlayerService>();
+builder.Services.AddScoped<IGameRepository, GameRepository>();
+builder.Services.AddScoped<GameService>();
+builder.Services.AddScoped<IRatingRepository, RatingRepository>();
+builder.Services.AddScoped<RatingService>();
+builder.Services.AddScoped<IGameChatRepository, GameChatRepository>();
+builder.Services.AddScoped<GameChatService>();
+builder.Services.AddDbContext<ChessDbContext>(options =>
+    options.UseSqlServer(config.GetConnectionString("Chess")));
+builder.Services.AddTransient<IPlayerRepository, PlayerRepository>();
+
 
 var app = builder.Build();
 
