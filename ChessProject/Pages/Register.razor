@@ -1,26 +1,41 @@
 ﻿@page "/register"
 @using ChessProject.Data
 @using ChessProject.Services
+@using System.Security.Cryptography;
+@using System.Text
 @inject PlayerService playerService
 @inject RatingService ratingService
+@inject NavigationManager navigationManager
+@inject Blazored.SessionStorage.ISessionStorageService session
+
+<style>
+    input {
+        display: inline-block;
+        padding: 5px 10px;
+        margin: 5px 0px;
+        width: 300px;
+        border-radius: 15px
+    }
+
+    label {
+        width: 100px;
+        font-size: 1.1rem;
+    }
+</style>
 
 <h3>Register</h3>
 
 <div class="form-group">
     <label for="Username">Username</label>
-    <input type="text" class="form-control" id="Username" placeholder="Enter username" @bind-value="Username" />
+    <input type="text" id="Username" placeholder="Enter username" @bind-value="Username" />
 </div>
 <div class="form-group">
     <label for="Password">Password</label>
-    <input type="password" class="form-control" id="Password" placeholder="Enter password" @bind-value="Password" />
+    <input type="password" id="Password" placeholder="Enter password" @bind-value="Password" />
 </div>
 <div class="form-group">
     <label for="Email">Email</label>
-    <input type="email" class="form-control" id="Email" placeholder="Enter email" @bind-value="Email" />
-</div>
-<div class="form-group">
-    <label for="TotalRating">Total Rating</label>
-    <input type="text" class="form-control" id="TotalRating" placeholder="Enter Total Rating" @bind-value="TotalRating" />
+    <input type="email" id="Email" placeholder="Enter email" @bind-value="Email" />
 </div>
 <button class="btn btn-primary" @onclick="PlayerRegister">Register</button>
 
@@ -32,14 +47,25 @@
     private string? Username { get; set; }
     private string? Password { get; set; }
     private string? Email { get; set; }
-    private int TotalRating { get; set; }
     private string? PassHash;
     private string? Salt;
     private string? Test;
 
     private void EncodePassword() {
-        PassHash = Password;
-        Salt = Password[0].ToString();
+        byte[] salt = new byte[16];
+        using (var rng = new RNGCryptoServiceProvider())
+        {
+            rng.GetBytes(salt);
+        }
+        byte[] passwordBytes = Encoding.UTF8.GetBytes(Password);
+        byte[] passwordWithSalt = new byte[passwordBytes.Length + salt.Length];
+        Buffer.BlockCopy(passwordBytes, 0, passwordWithSalt, 0, passwordBytes.Length);
+        Buffer.BlockCopy(salt, 0, passwordWithSalt, passwordBytes.Length, salt.Length);
+        using (var sha256 = new SHA256CryptoServiceProvider())
+        {
+            PassHash = Convert.ToBase64String(sha256.ComputeHash(passwordWithSalt));
+        }
+        Salt = Convert.ToBase64String(salt);
     }
 
     private async void PlayerRegister()
@@ -53,13 +79,17 @@
                 Email = Email,
                 PassHash = PassHash,
                 Salt = Salt,
-                TotalRating = TotalRating,
+                TotalRating = 1000,
                 DateCreatedAccount = DateTime.Now,
                 DateLastOnline = DateTime.Now,
                 Active = 1
             };
 
-        Test = await playerService.PlayerSave(player);
-        this.StateHasChanged();
+        await playerService.PlayerSave(player);
+        Player p = await playerService.PlayerLogin(Username);
+        await session.SetItemAsync("UserId", p.PlayerId);
+        await session.SetItemAsync("SessionUser", Username);
+        await session.SetItemAsync("Premission", p.PlayerType);
+        navigationManager.NavigateTo("/");
     }
 }
