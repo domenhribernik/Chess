@@ -1219,7 +1219,230 @@
         CheckDirections(activePiece);
         InvokeAsync(StateHasChanged);
     }
+    
+    //Forsyth–Edwards notacija
+    //pawn = "P", knight = "N", bishop = "B", rook = "R", queen = "Q" and king = "K"
+    //vlke crke so beli, male pa črni
+    //številke na sredini pomenijo koliko praznih prostorov je vmes
+    //na koncu w pomeni, da se naj premakne beli in b, da crni
+    public string ForsythEdwardsNotation()
+    {
+        string returnNotation = "";
+        List<(int value, PieceData piece)> ValueList= new();
+        foreach(var piece in blackPieces)
+        {
+            int value = 0;
 
+            switch (piece.Row)
+            {
+                case 0:
+                    value += 10;
+                    break;
+                case 1:
+                    value += 20;
+                    break;
+                case 2:
+                    value += 30;
+                    break;
+                case 3:
+                    value += 40;
+                    break;
+                case 4:
+                    value += 50;
+                    break;
+                case 5:
+                    value += 60;
+                    break;
+                case 6:
+                    value += 70;
+                    break;
+                case 7:
+                    value += 80;
+                    break;
+            }
+
+            switch (piece.Column)
+            {
+                case 0:
+                    value += 1;
+                    break;
+                case 1:
+                    value += 2;
+                    break;
+                case 2:
+                    value += 3;
+                    break;
+                case 3:
+                    value += 4;
+                    break;
+                case 4:
+                    value += 5;
+                    break;
+                case 5:
+                    value += 6;
+                    break;
+                case 6:
+                    value += 7;
+                    break;
+                case 7:
+                    value += 8;
+                    break;
+            }
+
+            ValueList.Add((value, piece));
+        }
+
+        foreach (var piece in whitePieces)
+        {
+            int value = 0;
+
+            switch (piece.Row)
+            {
+                case 0:
+                    value += 10;
+                    break;
+                case 1:
+                    value += 20;
+                    break;
+                case 2:
+                    value += 30;
+                    break;
+                case 3:
+                    value += 40;
+                    break;
+                case 4:
+                    value += 50;
+                    break;
+                case 5:
+                    value += 60;
+                    break;
+                case 6:
+                    value += 70;
+                    break;
+                case 7:
+                    value += 80;
+                    break;
+            }
+
+            switch (piece.Column)
+            {
+                case 0:
+                    value += 1;
+                    break;
+                case 1:
+                    value += 2;
+                    break;
+                case 2:
+                    value += 3;
+                    break;
+                case 3:
+                    value += 4;
+                    break;
+                case 4:
+                    value += 5;
+                    break;
+                case 5:
+                    value += 6;
+                    break;
+                case 6:
+                    value += 7;
+                    break;
+                case 7:
+                    value += 8;
+                    break;
+            }
+
+            ValueList.Add((value, piece));
+        }
+
+        ValueList.Sort();
+
+        //za dajanje posevnic v notacijo
+        for (int i = 0; i < ValueList.Count; i++)
+        {
+            if (i != 0)
+            {
+                if ((ValueList[i].value - (ValueList[i].value % 10)) > (ValueList[i-1].value - (ValueList[i-1].value % 10)))
+                {
+                    returnNotation += "/";
+                }
+                /*
+                if ((ValueList[i].value - (ValueList[i].value % 10)) > (ValueList[i - 1].value - (ValueList[i - 1].value % 10)))
+                {
+                   //zracunat neko razliko pa magari for zanko potem da se stevilke vmesne vpisejo na prazno vrstico 
+                }*/
+            }
+
+            switch (ValueList[i].piece.Type)
+            {
+                case (PiecesData.Type.Pawn):
+                    if (ValueList[i].piece.Color == white)
+                    {
+                        returnNotation += "P";
+                    }
+                    else
+                    {
+                        returnNotation += "p";
+                    }
+                    break;
+                case (PiecesData.Type.Rook):
+                    if (ValueList[i].piece.Color == white)
+                    {
+                        returnNotation += "R";
+                    }
+                    else
+                    {
+                        returnNotation += "r";
+                    }
+                    break;
+                case (PiecesData.Type.Knight):
+                    if (ValueList[i].piece.Color == white)
+                    {
+                        returnNotation += "N";
+                    }
+                    else
+                    {
+                        returnNotation += "n";
+                    }
+                    break;
+                case (PiecesData.Type.Bishop):
+                    if (ValueList[i].piece.Color == white)
+                    {
+                        returnNotation += "B";
+                    }
+                    else
+                    {
+                        returnNotation += "b";
+                    }
+                    break;
+                case (PiecesData.Type.Queen):
+                    if (ValueList[i].piece.Color == white)
+                    {
+                        returnNotation += "Q";
+                    }
+                    else
+                    {
+                        returnNotation += "q";
+                    }
+                    break;
+                case (PiecesData.Type.King):
+                    if (ValueList[i].piece.Color == white)
+                    {
+                        returnNotation += "K";
+                    }
+                    else
+                    {
+                        returnNotation += "k";
+                    }
+                    break;
+            }
+        }
+
+        //do zdaj imamo figure po vrsti z locevalno /
+
+        return returnNotation;
+    }
+        
     void MoveInLine(int row, int column, PieceData activePiece1)
     {
         if ((!IfFigureExists(activePiece1.Row + row, activePiece1.Column + column)) || (IfBlackFigureExists(activePiece1.Row + row, activePiece1.Column + column) && whiteTurn) || (IfWhiteFigureExists(activePiece1.Row + row, activePiece1.Column + column) && !whiteTurn))
