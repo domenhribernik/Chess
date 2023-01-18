@@ -149,13 +149,11 @@ else
 <br />
 <h2>DeletePlayer()</h2>
 
-<form method="get">
-    <div class="form-group">
-        <label for="RatingPlayerId">Player Id</label>
-        <input type="text" class="form-control" id="RatingPlayerId" placeholder="Enter Player Id" @bind-value="RatingPlayerId" />
-    </div>
-    <button type="submit" class="btn btn-primary" @onclick="DeletePlayer">Delete Player</button>
-</form>
+<div class="form-group">
+    <label for="DeletePlayerId">Player Id</label>
+    <input type="text" class="form-control" id="DeletePlayerId" placeholder="Enter Player Id" @bind-value="DeletePlayerId" />
+</div>
+<button class="btn btn-primary" @onclick="DeletePlayer">Delete Player</button>
 
 
 @code {
@@ -163,6 +161,7 @@ else
     private int PlayerId { get; set; }
     private Player? player;
     private int RatingPlayerId { get; set; }
+    private int DeletePlayerId { get; set; }
     private PlayerRating[]? playerRating;
 
     private int PlayerRatingSave { get; set; }
@@ -240,6 +239,7 @@ else
 
     private async void DeletePlayer()
     {
-        await playerService.PlayerDelete(PlayerId);
+        await playerService.PlayerDelete(DeletePlayerId);
+        StateHasChanged();
     }
 }

@@ -1,6 +1,6 @@
 ﻿@using ChessProject.Data
-@using System.Text.Json;
 @inject Blazored.SessionStorage.ISessionStorageService session
+@inject NavigationManager navigationManager
 
 <div class="top-row px-4">
     @if (sessionUser == null)
@@ -10,7 +10,7 @@
     }
     else
     {
-        <NavLink class="nav-link" href="userprofile" Match="NavLinkMatch.All"> @sessionUser </NavLink>
+        <NavLink class="nav-link" href="profile" Match="NavLinkMatch.All"> @sessionUser </NavLink>
         <NavLink @onclick="Logout"> Log out </NavLink>
     }
 
@@ -28,6 +28,7 @@
     private async void Logout()
     {
         await session.ClearAsync();
+        navigationManager.NavigateTo("/");
         StateHasChanged();
     }
 }

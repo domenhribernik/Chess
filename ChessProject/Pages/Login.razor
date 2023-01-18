@@ -14,21 +14,15 @@
 </div>
 <div class="form-group">
     <label for="Password">Password</label>
-    <input type="text" class="form-control" id="Password" placeholder="Enter password" @bind-value="Password" />
+    <input type="password" class="form-control" id="Password" placeholder="Enter password" @bind-value="Password" />
 </div>
 <button class="btn btn-primary" @onclick="PlayerLogin">Log in</button>
-
-@if (Test != null)
-{
-    <p role="status">@Test</p>
-}
 
 @code {
     private string? Username { get; set; }
     private string? Password { get; set; }
     private string? PassHash;
     private string? Salt;
-    private string? Test;
 
     private void EncodePassword()
     {
@@ -43,7 +37,9 @@
         EncodePassword();
         if (PassHash == p.PassHash)
         {
+            await session.SetItemAsync("UserId", p.PlayerId);
             await session.SetItemAsync("SessionUser", Username);
+            await session.SetItemAsync("Premission", p.PlayerType);
         }
         navigationManager.NavigateTo("/");
     }

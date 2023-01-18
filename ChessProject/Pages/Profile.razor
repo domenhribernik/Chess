@@ -1,0 +1,109 @@
+﻿@page "/profile"
+@using ChessProject.Data
+@using ChessProject.Services
+@inject PlayerService playerService
+@inject RatingService ratingService
+@inject Blazored.SessionStorage.ISessionStorageService session
+
+<h3>Profile</h3>
+
+
+@if (player != null)
+{
+    <div class="card mt-3">
+        <div class="card-body">
+            <h5 class="card-title">@player.Username</h5>
+            <h6 class="card-subtitle mb-2 text-muted">@player.Email</h6>
+            <p class="card-text">Total Rating: @player.TotalRating</p>
+        </div>
+    </div>
+}
+else {
+    <p><em>Loading...</em></p>
+}
+
+@if (playerRating != null)
+{
+    @foreach (var rating in playerRating)
+    {
+        <div class="card mt-2">
+            <div class="card-body">
+                <h5 class="card-title">@rating.RatingType</h5>
+                <p class="card-text">Games: @rating.NumberOfGames</p>
+                <p class="card-text">Rating: @rating.Rating</p>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <p><em>Loading...</em></p>
+}
+
+<div class="form-group">
+    <label style="padding-top:10px" for="Username">Username</label>
+    <input type="text" class="form-control" id="Username" placeholder="Enter username" @bind-value="Username" />
+</div>
+<div class="form-group">
+    <label style="padding-top:10px" for="Password">Password</label>
+    <input type="text" class="form-control" id="Password" placeholder="Enter password" @bind-value="Password" />
+</div>
+<br />
+<button class="btn btn-primary" @onclick="PlayerUpdate">Update</button>
+<br />
+<br />
+<button type="submit" class="btn btn-danger" @onclick="DeletePlayer">Delete Player</button>
+
+@code {
+    private int playerId;
+    private Player player;
+    private PlayerRating[]? playerRating;
+    private string? Username { get; set; }
+    private string? Password { get; set; }
+    private string? PassHash { get; set; }
+    private string? Salt { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        playerId = int.Parse(await session.GetItemAsync<string>("UserId"));
+        player = await playerService.PlayerLookup(playerId);
+        playerRating = (await ratingService.RatingLookup(playerId)).ToArray();
+        StateHasChanged();
+    }
+
+    private void EncodePassword()
+    {
+        PassHash = Password;
+        Salt = Password[0].ToString();
+    }
+
+    private async void PlayerUpdate()
+    {
+        EncodePassword();
+        var newPlayer = new Player
+            {
+                PlayerId = playerId,
+                PlayerTypeId = player.PlayerTypeId,
+                Username = player.Username,
+                Email = player.Email,
+                PassHash = PassHash,
+                Salt = Salt,
+                TotalRating = player.TotalRating,
+                DateCreatedAccount = DateTime.Now,
+                DateLastOnline = DateTime.Now,
+                Active = 1
+            };
+
+        if(Username != null) {
+            newPlayer.Username = Username;
+        }
+        await playerService.PlayerSave(newPlayer);
+        player = await playerService.PlayerLookup(playerId);
+        this.StateHasChanged();
+    }
+
+    private async void DeletePlayer()
+    {
+        await playerService.PlayerDelete(playerId);
+    }
+}
