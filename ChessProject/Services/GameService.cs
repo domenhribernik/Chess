@@ -18,6 +18,11 @@ namespace ChessProject.Services
             return await _gameRepository.GetGames();
         }
 
+        public async Task<List<Game>> GetPlayerGames(int playerId)
+        {
+            return await _gameRepository.GetPlayerGames(playerId);
+        }
+
         public async Task<string> GameSave(Game game)
         {
             return await _gameRepository.GameSave(game);

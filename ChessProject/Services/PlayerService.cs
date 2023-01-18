@@ -35,6 +35,11 @@ namespace ChessProject.Services
         {
             return await _playerRepository.PlayerDelete(playerId);
         }
+
+        public async Task<Player> PlayerLogin(string username)
+        {
+            return await _playerRepository.PlayerLogin(username);
+        }
     }
 }
 

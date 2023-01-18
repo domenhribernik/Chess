@@ -1,0 +1,50 @@
+﻿@page "/login"
+@using ChessProject.Data
+@using ChessProject.Services
+@inject PlayerService playerService
+@inject RatingService ratingService
+@inject NavigationManager navigationManager
+@inject Blazored.SessionStorage.ISessionStorageService session
+
+<h3>Login</h3>
+
+<div class="form-group">
+    <label for="Username">Username</label>
+    <input type="text" class="form-control" id="Username" placeholder="Enter username" @bind-value="Username" />
+</div>
+<div class="form-group">
+    <label for="Password">Password</label>
+    <input type="text" class="form-control" id="Password" placeholder="Enter password" @bind-value="Password" />
+</div>
+<button class="btn btn-primary" @onclick="PlayerLogin">Log in</button>
+
+@if (Test != null)
+{
+    <p role="status">@Test</p>
+}
+
+@code {
+    private string? Username { get; set; }
+    private string? Password { get; set; }
+    private string? PassHash;
+    private string? Salt;
+    private string? Test;
+
+    private void EncodePassword()
+    {
+        PassHash = Password;
+        Salt = Password[0].ToString();
+    }
+
+    private async void PlayerLogin()
+    {
+        Player p = await playerService.PlayerLogin(Username);
+        Salt = p.Salt;
+        EncodePassword();
+        if (PassHash == p.PassHash)
+        {
+            await session.SetItemAsync("SessionUser", Username);
+        }
+        navigationManager.NavigateTo("/");
+    }
+}

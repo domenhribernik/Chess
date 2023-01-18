@@ -1,0 +1,65 @@
+﻿@page "/register"
+@using ChessProject.Data
+@using ChessProject.Services
+@inject PlayerService playerService
+@inject RatingService ratingService
+
+<h3>Register</h3>
+
+<div class="form-group">
+    <label for="Username">Username</label>
+    <input type="text" class="form-control" id="Username" placeholder="Enter username" @bind-value="Username" />
+</div>
+<div class="form-group">
+    <label for="Password">Password</label>
+    <input type="text" class="form-control" id="Password" placeholder="Enter password" @bind-value="Password" />
+</div>
+<div class="form-group">
+    <label for="Email">Email</label>
+    <input type="email" class="form-control" id="Email" placeholder="Enter email" @bind-value="Email" />
+</div>
+<div class="form-group">
+    <label for="TotalRating">Total Rating</label>
+    <input type="text" class="form-control" id="TotalRating" placeholder="Enter Total Rating" @bind-value="TotalRating" />
+</div>
+<button class="btn btn-primary" @onclick="PlayerRegister">Register</button>
+
+@if (Test != null) {
+    <p role="status">@Test</p>
+}
+
+@code {
+    private string? Username { get; set; }
+    private string? Password { get; set; }
+    private string? Email { get; set; }
+    private int TotalRating { get; set; }
+    private string? PassHash;
+    private string? Salt;
+    private string? Test;
+
+    private void EncodePassword() {
+        PassHash = Password;
+        Salt = Password[0].ToString();
+    }
+
+    private async void PlayerRegister()
+    {
+        EncodePassword();
+        var player = new Player
+            {
+                PlayerId = -1,
+                PlayerTypeId = 1,
+                Username = Username,
+                Email = Email,
+                PassHash = PassHash,
+                Salt = Salt,
+                TotalRating = TotalRating,
+                DateCreatedAccount = DateTime.Now,
+                DateLastOnline = DateTime.Now,
+                Active = 1
+            };
+
+        Test = await playerService.PlayerSave(player);
+        this.StateHasChanged();
+    }
+}

@@ -9,6 +9,6 @@ namespace ChessProject.Repositories.Interfaces
         Task<Player> PlayerLookup(int playerId);
         Task<string> PlayerSave(Player player);
         Task<string> PlayerDelete(int playerId);
-
+        Task<Player> PlayerLogin(string username);
     }
 }
