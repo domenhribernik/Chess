@@ -1,0 +1,29 @@
+﻿.layout {
+    display: inline-block;
+    width: 80%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.gameMode {
+    display = inline-block;
+    margin-bottom: 15px;
+}
+
+.boardLayout {
+    position: relative;
+    display: inline-block;
+    width = 1200px;
+}
+
+.bottomClock {
+    position: relative;
+}
+
+.chat {
+    display: inline-block;
+    position: absolute;
+    margin-left: 20px;
+    margin-top: 200px;
+}

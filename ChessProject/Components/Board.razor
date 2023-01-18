@@ -2,23 +2,26 @@
 @using ChessProject.Data
 @using ChessProject.PiecesData
 
+<style>
+    .play-btn {
+        position: relative;
+        height: 100px;
+        width: 200px;
+        border: none;
+        color: white;
+        background-color: darkcyan;
+        font-size: 2rem;
+        margin-top: 10px;
+        margin-left: 30px;
+    }
+</style>
+
 <div>
     @if (!playing)
     {
         <button hidden="@hideButton" class="play-btn" @onclick="@Play">Play</button>
     }
 </div>
-
-<style>
-    .play-btn {
-        height: 100px;
-        width: 200px;
-        border: none;
-        color: white;
-        background-color: green;
-        font-size: 2rem;
-    }
-</style>
 
 @for (int i = 0; i < 8; i++)
 {

@@ -1,33 +1,29 @@
 ﻿@page "/"
 
-<style>
-	.boardLayout {
-		display: grid;
-		grid-template-columns: 900px auto
-	}
-	.cell {
-		display: inline-block;
-	}
-</style>
-
-<GameMode @ref="GameModeRef" 
-	SetRapid="@SetRapid" 
-	SetBlitz="@SetBlitz" 
-	SetBullet="@SetBullet"/>
-
-<div class="boardLayout">
-	<Clock @ref="Clock1Ref"
-		TimesUp="@TimesUp"/>
-	<Board 
-		@ref="BoardRef"
-		StartOrStopBlackTimer="@StartOrStopBlackTimer" 
-		StartOrStopWhiteTimer="@StartOrStopWhiteTimer"
-		FirstMove="@FirstMove"/>
-	<Clock @ref="Clock2Ref"
-		   TimesUp="@TimesUp" />
+<div class="layout">
+	<div class="boardLayout">
+		<div class="gameMode">
+			<GameMode @ref="GameModeRef"
+					  SetRapid="@SetRapid"
+					  SetBlitz="@SetBlitz"
+					  SetBullet="@SetBullet" />
+		</div>
+		<Clock @ref="Clock1Ref"
+			   TimesUp="@TimesUp" />
+		<Board @ref="BoardRef"
+			   StartOrStopBlackTimer="@StartOrStopBlackTimer"
+			   StartOrStopWhiteTimer="@StartOrStopWhiteTimer"
+			   FirstMove="@FirstMove" />
+		<div class="bottomClock">
+			<Clock @ref="Clock2Ref"
+				   TimesUp="@TimesUp" />
+		</div>
+	</div>
+	<div class="chat">
+		<ChessChat />
+	</div>
 </div>
 
-<ChessChat/>
 
 @code {
 	private Clock? Clock1Ref;

@@ -1,11 +1,13 @@
 ﻿.clock {
-    width: 25%;
+    width: 300px;
     font-size: 3rem;
     font-weight: 10px;
     letter-spacing: 5px;
     background-color: lightgray;
     text-align: center;
-    margin: 1rem 24rem;
+    margin: 10px 0px;
+    margin-left: 370px;
+    border-radius: 15px;
 }
 
 .times-up {

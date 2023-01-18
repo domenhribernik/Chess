@@ -5,6 +5,10 @@
     border: 1px solid black;
 }
 
+.cell:first-child {
+    margin-left: 40px;
+}
+
 .cell.active {
     border: 3px solid green;
 }
