@@ -429,204 +429,204 @@
     List<(int row, int column)> cellsPossible = new();
 
     //preveri kam lahko gre
-    void CheckDirections()
+    void CheckDirections(PieceData activePiece1)
     {
         cellsPossible.Clear();
 
-        if (activePiece != null)
+        if (activePiece1 != null)
         {
             // premiki in jemanje za kmete
-            if (activePiece.Type == PiecesData.Type.Pawn)
+            if (activePiece1.Type == PiecesData.Type.Pawn)
             {
                 // diagonalno jemanje
-                if (activePiece.Color == black)
+                if (activePiece1.Color == black)
                 {
-                    if (IfFigureExists(activePiece.Row + 1, activePiece.Column - 1))
+                    if (IfFigureExists(activePiece1.Row + 1, activePiece1.Column - 1))
                     {
-                        var whitePiece = whitePieces.FirstOrDefault(n => n.Row == activePiece.Row + 1 && n.Column == activePiece.Column - 1);
+                        var whitePiece = whitePieces.FirstOrDefault(n => n.Row == activePiece1.Row + 1 && n.Column == activePiece1.Column - 1);
                         if (whitePiece != null)//&& !checkIfChessCoordinates(activePiece.Row + 1, activePiece.Column - 1)
                         {
-                            cellsPossible.Add((activePiece.Row + 1, activePiece.Column - 1));
+                            cellsPossible.Add((activePiece1.Row + 1, activePiece1.Column - 1));
                         }
                     }
-                    if (IfFigureExists(activePiece.Row + 1, activePiece.Column + 1))
+                    if (IfFigureExists(activePiece1.Row + 1, activePiece1.Column + 1))
                     {
-                        var whitePiece = whitePieces.FirstOrDefault(n => n.Row == activePiece.Row + 1 && n.Column == activePiece.Column + 1);
+                        var whitePiece = whitePieces.FirstOrDefault(n => n.Row == activePiece1.Row + 1 && n.Column == activePiece1.Column + 1);
                         if (whitePiece != null)//&& !checkIfChessCoordinates(activePiece.Row + 1, activePiece.Column + 1)
                         {
-                            cellsPossible.Add((activePiece.Row + 1, activePiece.Column + 1));
+                            cellsPossible.Add((activePiece1.Row + 1, activePiece1.Column + 1));
                         }
                     }
 
                     // en passant - crni
-                    if (IfFigureExists(4, activePiece.Column - 1) && activePiece.Row == 4 && activePiece.Column == enPassantColumn + 1 && blackEnPassant)
+                    if (IfFigureExists(4, activePiece1.Column - 1) && activePiece1.Row == 4 && activePiece1.Column == enPassantColumn + 1 && blackEnPassant)
                     {
-                        var whitePiece = whitePieces.FirstOrDefault(n => n.Row == activePiece.Row && n.Column == activePiece.Column - 1);
-                        Console.WriteLine("En passant column = " + enPassantColumn + ", activeColumn = " + activePiece.Column);
+                        var whitePiece = whitePieces.FirstOrDefault(n => n.Row == activePiece1.Row && n.Column == activePiece1.Column - 1);
+                        Console.WriteLine("En passant column = " + enPassantColumn + ", activeColumn = " + activePiece1.Column);
                         if (whitePiece != null)
                         {
-                            cellsPossible.Add((activePiece.Row + 1, activePiece.Column - 1));
+                            cellsPossible.Add((activePiece1.Row + 1, activePiece1.Column - 1));
                         }
                     }
-                    if (IfFigureExists(4, activePiece.Column + 1) && activePiece.Row == 4 && activePiece.Column == enPassantColumn - 1 && blackEnPassant)
+                    if (IfFigureExists(4, activePiece1.Column + 1) && activePiece1.Row == 4 && activePiece1.Column == enPassantColumn - 1 && blackEnPassant)
                     {
-                        var whitePiece = whitePieces.FirstOrDefault(n => n.Row == activePiece.Row && n.Column == activePiece.Column + 1);
-                        Console.WriteLine("En passant column = " + enPassantColumn + ", activeColumn = " + activePiece.Column);
+                        var whitePiece = whitePieces.FirstOrDefault(n => n.Row == activePiece1.Row && n.Column == activePiece1.Column + 1);
+                        Console.WriteLine("En passant column = " + enPassantColumn + ", activeColumn = " + activePiece1.Column);
                         if (whitePiece != null)
                         {
-                            cellsPossible.Add((activePiece.Row + 1, activePiece.Column + 1));
+                            cellsPossible.Add((activePiece1.Row + 1, activePiece1.Column + 1));
                         }
                     }
                     //1 polje naprej premakne
-                    AddIfFigureNotExists(activePiece.Row + 1, activePiece.Column);
+                    AddIfFigureNotExists(activePiece1.Row + 1, activePiece1.Column);
                 }
                 else
                 {
-                    if (IfFigureExists(activePiece.Row - 1, activePiece.Column - 1))
+                    if (IfFigureExists(activePiece1.Row - 1, activePiece1.Column - 1))
                     {
-                        var blackPiece = blackPieces.FirstOrDefault(n => n.Row == activePiece.Row - 1 && n.Column == activePiece.Column - 1);
+                        var blackPiece = blackPieces.FirstOrDefault(n => n.Row == activePiece1.Row - 1 && n.Column == activePiece1.Column - 1);
                         if (blackPiece != null)//&& !checkIfChessCoordinates(activePiece.Row - 1, activePiece.Column - 1)
                         {
-                            cellsPossible.Add((activePiece.Row - 1, activePiece.Column - 1));
+                            cellsPossible.Add((activePiece1.Row - 1, activePiece1.Column - 1));
                         }
                     }
-                    if (IfFigureExists(activePiece.Row - 1, activePiece.Column + 1))
+                    if (IfFigureExists(activePiece1.Row - 1, activePiece1.Column + 1))
                     {
-                        var blackPiece = blackPieces.FirstOrDefault(n => n.Row == activePiece.Row - 1 && n.Column == activePiece.Column + 1);
+                        var blackPiece = blackPieces.FirstOrDefault(n => n.Row == activePiece1.Row - 1 && n.Column == activePiece1.Column + 1);
                         if (blackPiece != null)//&& !checkIfChessCoordinates(activePiece.Row - 1, activePiece.Column + 1)
                         {
-                            cellsPossible.Add((activePiece.Row - 1, activePiece.Column + 1));
+                            cellsPossible.Add((activePiece1.Row - 1, activePiece1.Column + 1));
                         }
                     }
 
                     // en passant - beli
-                    if (IfFigureExists(3, activePiece.Column - 1) && activePiece.Row == 3 && activePiece.Column == enPassantColumn + 1 && whiteEnPassant)
+                    if (IfFigureExists(3, activePiece1.Column - 1) && activePiece1.Row == 3 && activePiece1.Column == enPassantColumn + 1 && whiteEnPassant)
                     {
-                        var blackPiece = blackPieces.FirstOrDefault(n => n.Row == activePiece.Row && n.Column == activePiece.Column - 1);
-                        Console.WriteLine("BELI En passant column = " + enPassantColumn + ", activeColumn = " + activePiece.Column);
+                        var blackPiece = blackPieces.FirstOrDefault(n => n.Row == activePiece1.Row && n.Column == activePiece1.Column - 1);
+                        Console.WriteLine("BELI En passant column = " + enPassantColumn + ", activeColumn = " + activePiece1.Column);
                         if (blackPiece != null)
                         {
-                            cellsPossible.Add((activePiece.Row - 1, activePiece.Column - 1));
+                            cellsPossible.Add((activePiece1.Row - 1, activePiece1.Column - 1));
                         }
                     }
-                    if (IfFigureExists(3, activePiece.Column + 1) && activePiece.Row == 3 && activePiece.Column == enPassantColumn - 1 && whiteEnPassant)
+                    if (IfFigureExists(3, activePiece1.Column + 1) && activePiece1.Row == 3 && activePiece1.Column == enPassantColumn - 1 && whiteEnPassant)
                     {
-                        var blackPiece = blackPieces.FirstOrDefault(n => n.Row == activePiece.Row && n.Column == activePiece.Column + 1);
-                        Console.WriteLine("BELI En passant column = " + enPassantColumn + ", activeColumn = " + activePiece.Column);
+                        var blackPiece = blackPieces.FirstOrDefault(n => n.Row == activePiece1.Row && n.Column == activePiece1.Column + 1);
+                        Console.WriteLine("BELI En passant column = " + enPassantColumn + ", activeColumn = " + activePiece1.Column);
                         if (blackPiece != null)
                         {
-                            cellsPossible.Add((activePiece.Row - 1, activePiece.Column + 1));
+                            cellsPossible.Add((activePiece1.Row - 1, activePiece1.Column + 1));
                         }
                     }
                     //1 polje naprej premakne
-                    AddIfFigureNotExists(activePiece.Row - 1, activePiece.Column);
+                    AddIfFigureNotExists(activePiece1.Row - 1, activePiece1.Column);
                 }
 
                 //za 2 polja naprej na zacetku premakne
-                if ((activePiece.Row == 1) && (activePiece.Color == black) && (!IfFigureExists(2, activePiece.Column)))
+                if ((activePiece1.Row == 1) && (activePiece1.Color == black) && (!IfFigureExists(2, activePiece1.Column)))
                 {
-                    AddIfFigureNotExists(3, activePiece.Column);
+                    AddIfFigureNotExists(3, activePiece1.Column);
                 }
-                else if ((activePiece.Row == 6) && (activePiece.Color == white) && (!IfFigureExists(5, activePiece.Column)))
+                else if ((activePiece1.Row == 6) && (activePiece1.Color == white) && (!IfFigureExists(5, activePiece1.Column)))
                 {
-                    AddIfFigureNotExists(4, activePiece.Column);
+                    AddIfFigureNotExists(4, activePiece1.Column);
                 }
             }
 
             //premik za 1-7 polj gor, dol, levo, desno, poje ce treba
-            if ((activePiece.Type == PiecesData.Type.Rook) || (activePiece.Type == PiecesData.Type.Queen) || (activePiece.Type == PiecesData.Type.King))
+            if ((activePiece1.Type == PiecesData.Type.Rook) || (activePiece1.Type == PiecesData.Type.Queen) || (activePiece1.Type == PiecesData.Type.King))
             {
-                MoveInLine(0, 1);
-                MoveInLine(0, -1);
-                MoveInLine(1, 0);
-                MoveInLine(-1, 0);
+                MoveInLine(0, 1, activePiece1);
+                MoveInLine(0, -1, activePiece1);
+                MoveInLine(1, 0, activePiece1);
+                MoveInLine(-1, 0, activePiece1);
             }
 
             //diagonalni premik za 1-7 polj, poje ce treba
-            if ((activePiece.Type == PiecesData.Type.Bishop) || (activePiece.Type == PiecesData.Type.Queen) || (activePiece.Type == PiecesData.Type.King))
+            if ((activePiece1.Type == PiecesData.Type.Bishop) || (activePiece1.Type == PiecesData.Type.Queen) || (activePiece1.Type == PiecesData.Type.King))
             {
-                MoveInLine(1, 1);
-                MoveInLine(1, -1);
-                MoveInLine(-1, 1);
-                MoveInLine(-1, -1);
+                MoveInLine(1, 1, activePiece1);
+                MoveInLine(1, -1, activePiece1);
+                MoveInLine(-1, 1, activePiece1);
+                MoveInLine(-1, -1, activePiece1);
             }
 
             // Premik L - konj, poje ce treba
-            if (activePiece.Type == PiecesData.Type.Knight)
+            if (activePiece1.Type == PiecesData.Type.Knight)
             {
-                if ((!IfFigureExists(activePiece.Row + 2, activePiece.Column - 1) || (IfBlackFigureExists(activePiece.Row + 2, activePiece.Column - 1) && whiteTurn) || (IfWhiteFigureExists(activePiece.Row + 2, activePiece.Column - 1) && !whiteTurn)))
+                if ((!IfFigureExists(activePiece1.Row + 2, activePiece1.Column - 1) || (IfBlackFigureExists(activePiece1.Row + 2, activePiece1.Column - 1) && whiteTurn) || (IfWhiteFigureExists(activePiece1.Row + 2, activePiece1.Column - 1) && !whiteTurn)))
                 {
-                    AddIfSameColorNotExists(activePiece, activePiece.Row + 2, activePiece.Column - 1);
+                    AddIfSameColorNotExists(activePiece1, activePiece1.Row + 2, activePiece1.Column - 1);
                 }
-                if ((!IfFigureExists(activePiece.Row + 2, activePiece.Column + 1) || (IfBlackFigureExists(activePiece.Row + 2, activePiece.Column + 1) && whiteTurn) || (IfWhiteFigureExists(activePiece.Row + 2, activePiece.Column + 1) && !whiteTurn)))
+                if ((!IfFigureExists(activePiece1.Row + 2, activePiece1.Column + 1) || (IfBlackFigureExists(activePiece1.Row + 2, activePiece1.Column + 1) && whiteTurn) || (IfWhiteFigureExists(activePiece1.Row + 2, activePiece1.Column + 1) && !whiteTurn)))
                 {
-                    AddIfSameColorNotExists(activePiece, activePiece.Row + 2, activePiece.Column + 1);
+                    AddIfSameColorNotExists(activePiece1, activePiece1.Row + 2, activePiece1.Column + 1);
                 }
-                if ((!IfFigureExists(activePiece.Row + 1, activePiece.Column - 2) || (IfBlackFigureExists(activePiece.Row + 1, activePiece.Column - 2) && whiteTurn) || (IfWhiteFigureExists(activePiece.Row + 1, activePiece.Column - 2) && !whiteTurn)))
+                if ((!IfFigureExists(activePiece1.Row + 1, activePiece1.Column - 2) || (IfBlackFigureExists(activePiece1.Row + 1, activePiece1.Column - 2) && whiteTurn) || (IfWhiteFigureExists(activePiece1.Row + 1, activePiece1.Column - 2) && !whiteTurn)))
                 {
-                    AddIfSameColorNotExists(activePiece, activePiece.Row + 1, activePiece.Column - 2);
+                    AddIfSameColorNotExists(activePiece1, activePiece1.Row + 1, activePiece1.Column - 2);
                 }
-                if ((!IfFigureExists(activePiece.Row + 1, activePiece.Column + 2) || (IfBlackFigureExists(activePiece.Row + 1, activePiece.Column + 2) && whiteTurn) || (IfWhiteFigureExists(activePiece.Row + 1, activePiece.Column + 2) && !whiteTurn)))
+                if ((!IfFigureExists(activePiece1.Row + 1, activePiece1.Column + 2) || (IfBlackFigureExists(activePiece1.Row + 1, activePiece1.Column + 2) && whiteTurn) || (IfWhiteFigureExists(activePiece1.Row + 1, activePiece1.Column + 2) && !whiteTurn)))
                 {
-                    AddIfSameColorNotExists(activePiece, activePiece.Row + 1, activePiece.Column + 2);
+                    AddIfSameColorNotExists(activePiece1, activePiece1.Row + 1, activePiece1.Column + 2);
                 }
-                if ((!IfFigureExists(activePiece.Row - 1, activePiece.Column - 2) || (IfBlackFigureExists(activePiece.Row - 1, activePiece.Column - 2) && whiteTurn) || (IfWhiteFigureExists(activePiece.Row - 1, activePiece.Column - 2) && !whiteTurn)))
+                if ((!IfFigureExists(activePiece1.Row - 1, activePiece1.Column - 2) || (IfBlackFigureExists(activePiece1.Row - 1, activePiece1.Column - 2) && whiteTurn) || (IfWhiteFigureExists(activePiece1.Row - 1, activePiece1.Column - 2) && !whiteTurn)))
                 {
-                    AddIfSameColorNotExists(activePiece, activePiece.Row - 1, activePiece.Column - 2);
+                    AddIfSameColorNotExists(activePiece1, activePiece1.Row - 1, activePiece1.Column - 2);
                 }
-                if ((!IfFigureExists(activePiece.Row - 1, activePiece.Column + 2) || (IfBlackFigureExists(activePiece.Row - 1, activePiece.Column + 2) && whiteTurn) || (IfWhiteFigureExists(activePiece.Row - 1, activePiece.Column + 2) && !whiteTurn)))
+                if ((!IfFigureExists(activePiece1.Row - 1, activePiece1.Column + 2) || (IfBlackFigureExists(activePiece1.Row - 1, activePiece1.Column + 2) && whiteTurn) || (IfWhiteFigureExists(activePiece1.Row - 1, activePiece1.Column + 2) && !whiteTurn)))
                 {
-                    AddIfSameColorNotExists(activePiece, activePiece.Row - 1, activePiece.Column + 2);
+                    AddIfSameColorNotExists(activePiece1, activePiece1.Row - 1, activePiece1.Column + 2);
                 }
-                if ((!IfFigureExists(activePiece.Row - 2, activePiece.Column - 1) || (IfBlackFigureExists(activePiece.Row - 2, activePiece.Column - 1) && whiteTurn) || (IfWhiteFigureExists(activePiece.Row - 2, activePiece.Column - 1) && !whiteTurn)))
+                if ((!IfFigureExists(activePiece1.Row - 2, activePiece1.Column - 1) || (IfBlackFigureExists(activePiece1.Row - 2, activePiece1.Column - 1) && whiteTurn) || (IfWhiteFigureExists(activePiece1.Row - 2, activePiece1.Column - 1) && !whiteTurn)))
                 {
-                    AddIfSameColorNotExists(activePiece, activePiece.Row - 2, activePiece.Column - 1);
+                    AddIfSameColorNotExists(activePiece1, activePiece1.Row - 2, activePiece1.Column - 1);
                 }
-                if ((!IfFigureExists(activePiece.Row - 2, activePiece.Column + 1) || (IfBlackFigureExists(activePiece.Row - 2, activePiece.Column + 1) && whiteTurn) || (IfWhiteFigureExists(activePiece.Row - 2, activePiece.Column + 1) && !whiteTurn)))
+                if ((!IfFigureExists(activePiece1.Row - 2, activePiece1.Column + 1) || (IfBlackFigureExists(activePiece1.Row - 2, activePiece1.Column + 1) && whiteTurn) || (IfWhiteFigureExists(activePiece1.Row - 2, activePiece1.Column + 1) && !whiteTurn)))
                 {
-                    AddIfSameColorNotExists(activePiece, activePiece.Row - 2, activePiece.Column + 1);
+                    AddIfSameColorNotExists(activePiece1, activePiece1.Row - 2, activePiece1.Column + 1);
                 }
             }
 
             // rosada na kraljicini strani - beli
-            if (activePiece.Type == PiecesData.Type.King && whiteTurn && canWhiteQueenSideCastle)
+            if (activePiece1.Type == PiecesData.Type.King && whiteTurn && canWhiteQueenSideCastle)
             {
-                if (!IfFigureExists(activePiece.Row, activePiece.Column - 1) && !IfFigureExists(activePiece.Row, activePiece.Column - 2) && !IfFigureExists(activePiece.Row, activePiece.Column - 3))
+                if (!IfFigureExists(activePiece1.Row, activePiece1.Column - 1) && !IfFigureExists(activePiece1.Row, activePiece1.Column - 2) && !IfFigureExists(activePiece1.Row, activePiece1.Column - 3))
                 {
-                    AddIfSameColorNotExists(activePiece, activePiece.Row, activePiece.Column - 2);
+                    AddIfSameColorNotExists(activePiece1, activePiece1.Row, activePiece1.Column - 2);
                 }
             }
 
             // rosada na kraljevi strani - beli
-            if (activePiece.Type == PiecesData.Type.King && whiteTurn && canWhiteKingSideCastle)
+            if (activePiece1.Type == PiecesData.Type.King && whiteTurn && canWhiteKingSideCastle)
             {
-                if (!IfFigureExists(activePiece.Row, activePiece.Column + 1) && !IfFigureExists(activePiece.Row, activePiece.Column + 2))
+                if (!IfFigureExists(activePiece1.Row, activePiece1.Column + 1) && !IfFigureExists(activePiece1.Row, activePiece1.Column + 2))
                 {
-                    AddIfSameColorNotExists(activePiece, activePiece.Row, activePiece.Column + 2);
+                    AddIfSameColorNotExists(activePiece1, activePiece1.Row, activePiece1.Column + 2);
                 }
             }
 
             // rosada na kraljicini strani - crni
-            if (activePiece.Type == PiecesData.Type.King && !whiteTurn && canBlackQueenSideCastle)
+            if (activePiece1.Type == PiecesData.Type.King && !whiteTurn && canBlackQueenSideCastle)
             {
-                if (!IfFigureExists(activePiece.Row, activePiece.Column - 1) && !IfFigureExists(activePiece.Row, activePiece.Column - 2) && !IfFigureExists(activePiece.Row, activePiece.Column - 3))
+                if (!IfFigureExists(activePiece1.Row, activePiece1.Column - 1) && !IfFigureExists(activePiece1.Row, activePiece1.Column - 2) && !IfFigureExists(activePiece1.Row, activePiece1.Column - 3))
                 {
-                    AddIfSameColorNotExists(activePiece, activePiece.Row, activePiece.Column - 2);
+                    AddIfSameColorNotExists(activePiece1, activePiece1.Row, activePiece1.Column - 2);
                 }
             }
 
             // rosada na kraljevi strani - crni
-            if (activePiece.Type == PiecesData.Type.King && !whiteTurn && canBlackKingSideCastle)
+            if (activePiece1.Type == PiecesData.Type.King && !whiteTurn && canBlackKingSideCastle)
             {
-                if (!IfFigureExists(activePiece.Row, activePiece.Column + 1) && !IfFigureExists(activePiece.Row, activePiece.Column + 2))
+                if (!IfFigureExists(activePiece1.Row, activePiece1.Column + 1) && !IfFigureExists(activePiece1.Row, activePiece1.Column + 2))
                 {
-                    AddIfSameColorNotExists(activePiece, activePiece.Row, activePiece.Column + 2);
+                    AddIfSameColorNotExists(activePiece1, activePiece1.Row, activePiece1.Column + 2);
                 }
             }
         }
     }
 
-    void checkIfChess()
+    bool checkIfChess()
     {
         blackHasChess = false;
         whiteHasChess = false;
@@ -639,20 +639,22 @@
                 break;
             }
 
-            activePiece = whitePieces[i];
-            CheckDirections();
-            for (int j = 0; j < cellsPossible.Count; j++)
+            PieceData activeHolder;
+            activeHolder = whitePieces[i];
+            if (!(activeHolder.Type == PiecesData.Type.King))
             {
-                // tu vrze izjemo ce probas pojest kralja
-                if ((cellsPossible[j].row == blackKing[0].Row) && (cellsPossible[j].column == blackKing[0].Column))
+                CheckDirections(activeHolder);
+                for (int j = 0; j < cellsPossible.Count; j++)
                 {
-                    blackHasChess = true;
-                    Console.WriteLine("Crni mas sah!");
-                    break;
+                    // tu vrze izjemo ce probas pojest kralja
+                    if ((cellsPossible[j].row == blackKing[0].Row) && (cellsPossible[j].column == blackKing[0].Column))
+                    {
+                        blackHasChess = true;
+                        Console.WriteLine("Crni mas sah!");
+                        break;
+                    }
                 }
             }
-
-            activePiece = null;
         }
 
         //ce ima beli sah
@@ -663,62 +665,143 @@
                 break;
             }
 
-            activePiece = blackPieces[i];
-            CheckDirections();
-            for (int j = 0; j < cellsPossible.Count; j++)
+            PieceData activeHolder;
+            activeHolder = blackPieces[i];
+            if (!(activeHolder.Type == PiecesData.Type.King))
             {
-                if ((cellsPossible[j].row == whiteKing[0].Row) && (cellsPossible[j].column == whiteKing[0].Column))
+                CheckDirections(activeHolder);
+                for (int j = 0; j < cellsPossible.Count; j++)
                 {
-                    whiteHasChess = true;
-                    Console.WriteLine("Beli mas sah!");
-                    break;
+                    if ((cellsPossible[j].row == whiteKing[0].Row) && (cellsPossible[j].column == whiteKing[0].Column))
+                    {
+                        whiteHasChess = true;
+                        Console.WriteLine("Beli mas sah!");
+                        break;
+                    }
                 }
             }
+        }
 
-            activePiece = null;
+        CheckDirections(activePiece);
+        if ((whiteTurn && whiteHasChess) || (!whiteTurn && blackHasChess))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 
     bool checkIfChessCoordinates(int row, int column)
     {
+        blackHasChess = false;
+        whiteHasChess = false;
+
         //ce ima crni sah
-        if (whiteTurn)
-        {
-            for (int i = 0; i < whitePieces.Count; i++)
-            {
-                PieceData activeHolder = activePiece;
-                activePiece = whitePieces[i];
-                CheckDirections();
-                for (int j = 0; j < cellsPossible.Count; j++)
-                {
-                    if ((cellsPossible[j].row == row) && (cellsPossible[j].column == column))
-                    {
-                        return true;
-                    }
-                }
-
-                activePiece = activeHolder;
-            }
-        }
-
         if (!whiteTurn)
         {
-            for (int i = 0; i < blackPieces.Count; i++)
+            if (activePiece.Type == PiecesData.Type.King)
             {
-                activePiece = blackPieces[i];
-                CheckDirections();
-                for (int j = 0; j < cellsPossible.Count; j++)
+                for (int i = 0; i < whitePieces.Count; i++)
                 {
-                    if ((cellsPossible[j].row == row) && (cellsPossible[j].column == column))
+                    if (blackHasChess)
                     {
-                        return true;
+                        break;
+                    }
+
+                    PieceData activeHolder;
+                    activeHolder = whitePieces[i];
+                    if (!(activeHolder.Type == PiecesData.Type.King))
+                    {
+                        CheckDirections(activeHolder);
+                        for (int j = 0; j < cellsPossible.Count; j++)
+                        {
+                            if ((cellsPossible[j].row == row) && (cellsPossible[j].column == column))
+                            {
+                                blackHasChess = true;
+                                Console.WriteLine("Crni mas sah!");
+                                break;
+                            }
+                        }
                     }
                 }
-                activePiece = null;
+            }
+            else
+            {
+                int rowHolder = activePiece.Row;
+                int columnHolder = activePiece.Column;
+                activePiece.Row = row;
+                activePiece.Column = column;
+                if (checkIfChess())
+                {
+                    activePiece.Row = rowHolder;
+                    activePiece.Column = columnHolder;
+                    return true;
+                }
+
+                activePiece.Row = rowHolder;
+                activePiece.Column = columnHolder;
+                return false;
+            }
+
+        }
+
+        if (whiteTurn)
+        {
+            //ce ima beli sah
+            if (activePiece.Type == PiecesData.Type.King)
+            {
+                foreach (var i in blackPieces)
+                {
+                    if (whiteHasChess)
+                    {
+                        break;
+                    }
+
+                    PieceData activeHolder;
+                    activeHolder = i;
+                    if (!(activeHolder.Type == PiecesData.Type.King))
+                    {
+                        CheckDirections(activeHolder);
+                        foreach (var j in cellsPossible)
+                        {
+                            if ((j.row == row) && (j.column == column))
+                            {
+                                whiteHasChess = true;
+                                Console.WriteLine("Beli mas sah!");
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                int rowHolder = activePiece.Row;
+                int columnHolder = activePiece.Column;
+                activePiece.Row = row;
+                activePiece.Column = column;
+                if (checkIfChess())
+                {
+                    activePiece.Row = rowHolder;
+                    activePiece.Column = columnHolder;
+                    return true;
+                }
+                activePiece.Row = rowHolder;
+                activePiece.Column = columnHolder;
+                return false;
             }
         }
 
-        return false;
+        if ((whiteTurn && whiteHasChess) || (!whiteTurn && blackHasChess))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     bool IfFigureExists(int row, int column)
@@ -734,6 +817,40 @@
         {
             return true;
         }
+    }
+
+    void removeNotPossibleCells()
+    {
+        List<(int row, int column)> cellsToRemove = new();
+        List<(int row, int column)> celPosHolder = new();
+
+        celPosHolder = cellsPossible.ToList();
+        int cellCount = cellsPossible.Count;
+        foreach (var f in celPosHolder.ToList())
+        {
+
+            if (checkIfChessCoordinates(f.row, f.column))
+            {
+                //Console.WriteLine("Problem: " + tmpList[f].row + " : " + tmpList[f].column);
+                cellsToRemove.Add(f);//(celPosHolder[f].row, celPosHolder[f].column)
+            }
+        }
+
+        CheckDirections(activePiece);
+
+        foreach (var i in cellsPossible.ToList())
+        {
+            foreach (var j in cellsToRemove.ToList())
+            {
+                if (i == j)
+                {
+                    //Console.WriteLine("REMOVE IT!!!");
+                    cellsPossible.Remove(j);
+                    break;
+                }
+            }
+        }
+
     }
 
     bool IfWhiteFigureExists(int row, int column)
@@ -1042,8 +1159,8 @@
         activePiece.Row = row;
         activePiece = null;
         whiteTurn = !whiteTurn;
-        //checkIfChess();
-        CheckDirections();
+        bool isChess = checkIfChess();
+        CheckDirections(activePiece);
 
         // ko igralec premakne figuro se ura ustavi in pricne odstevat nasprotniku
         if (!whiteTurn) {
@@ -1096,33 +1213,33 @@
             activePiece = piece;
         }
 
-        CheckDirections();
+        CheckDirections(activePiece);
         InvokeAsync(StateHasChanged);
     }
 
-    void MoveInLine(int row, int column)
+    void MoveInLine(int row, int column, PieceData activePiece1)
     {
-        if ((!IfFigureExists(activePiece.Row + row, activePiece.Column + column)) || (IfBlackFigureExists(activePiece.Row + row, activePiece.Column + column) && whiteTurn) || (IfWhiteFigureExists(activePiece.Row + row, activePiece.Column + column) && !whiteTurn))
+        if ((!IfFigureExists(activePiece1.Row + row, activePiece1.Column + column)) || (IfBlackFigureExists(activePiece1.Row + row, activePiece1.Column + column) && whiteTurn) || (IfWhiteFigureExists(activePiece1.Row + row, activePiece1.Column + column) && !whiteTurn))
         {
-            AddIfSameColorNotExists(activePiece, activePiece.Row + row, activePiece.Column + column);
-            if ((!IfFigureExists(activePiece.Row + (row * 2), activePiece.Column + (column * 2)) || (IfBlackFigureExists(activePiece.Row + (row * 2), activePiece.Column + (column * 2)) && whiteTurn) || (IfWhiteFigureExists(activePiece.Row + (row * 2), activePiece.Column + (column * 2)) && !whiteTurn)) && (activePiece.Type != PiecesData.Type.King) && !IfFigureExists(activePiece.Row + row, activePiece.Column + column))
+            AddIfSameColorNotExists(activePiece1, activePiece1.Row + row, activePiece1.Column + column);
+            if ((!IfFigureExists(activePiece1.Row + (row * 2), activePiece1.Column + (column * 2)) || (IfBlackFigureExists(activePiece1.Row + (row * 2), activePiece1.Column + (column * 2)) && whiteTurn) || (IfWhiteFigureExists(activePiece1.Row + (row * 2), activePiece1.Column + (column * 2)) && !whiteTurn)) && (activePiece1.Type != PiecesData.Type.King) && !IfFigureExists(activePiece1.Row + row, activePiece1.Column + column))
             {
-                AddIfSameColorNotExists(activePiece, activePiece.Row + (row * 2), activePiece.Column + (column * 2));
-                if ((!IfFigureExists(activePiece.Row + (row * 3), activePiece.Column + (column * 3)) || (IfBlackFigureExists(activePiece.Row + (row * 3), activePiece.Column + (column * 3)) && whiteTurn) || (IfWhiteFigureExists(activePiece.Row + (row * 3), activePiece.Column + (column * 3)) && !whiteTurn)) && !IfFigureExists(activePiece.Row + (row * 2), activePiece.Column + (column * 2)))
+                AddIfSameColorNotExists(activePiece1, activePiece1.Row + (row * 2), activePiece1.Column + (column * 2));
+                if ((!IfFigureExists(activePiece1.Row + (row * 3), activePiece1.Column + (column * 3)) || (IfBlackFigureExists(activePiece1.Row + (row * 3), activePiece1.Column + (column * 3)) && whiteTurn) || (IfWhiteFigureExists(activePiece1.Row + (row * 3), activePiece1.Column + (column * 3)) && !whiteTurn)) && !IfFigureExists(activePiece1.Row + (row * 2), activePiece1.Column + (column * 2)))
                 {
-                    AddIfSameColorNotExists(activePiece, activePiece.Row + (row * 3), activePiece.Column + (column * 3));
-                    if ((!IfFigureExists(activePiece.Row + (row * 4), activePiece.Column + (column * 4)) || (IfBlackFigureExists(activePiece.Row + (row * 4), activePiece.Column + (column * 4)) && whiteTurn) || (IfWhiteFigureExists(activePiece.Row + (row * 4), activePiece.Column + (column * 4)) && !whiteTurn)) && !IfFigureExists(activePiece.Row + (row * 3), activePiece.Column + (column * 3)))
+                    AddIfSameColorNotExists(activePiece1, activePiece1.Row + (row * 3), activePiece1.Column + (column * 3));
+                    if ((!IfFigureExists(activePiece1.Row + (row * 4), activePiece1.Column + (column * 4)) || (IfBlackFigureExists(activePiece1.Row + (row * 4), activePiece1.Column + (column * 4)) && whiteTurn) || (IfWhiteFigureExists(activePiece1.Row + (row * 4), activePiece1.Column + (column * 4)) && !whiteTurn)) && !IfFigureExists(activePiece1.Row + (row * 3), activePiece1.Column + (column * 3)))
                     {
-                        AddIfSameColorNotExists(activePiece, activePiece.Row + (row * 4), activePiece.Column + (column * 4));
-                        if ((!IfFigureExists(activePiece.Row + (row * 5), activePiece.Column + (column * 5)) || (IfBlackFigureExists(activePiece.Row + (row * 5), activePiece.Column + (column * 5)) && whiteTurn) || (IfWhiteFigureExists(activePiece.Row + (row * 5), activePiece.Column + (column * 5)) && !whiteTurn)) && !IfFigureExists(activePiece.Row + (row * 4), activePiece.Column + (column * 4)))
+                        AddIfSameColorNotExists(activePiece1, activePiece1.Row + (row * 4), activePiece1.Column + (column * 4));
+                        if ((!IfFigureExists(activePiece1.Row + (row * 5), activePiece1.Column + (column * 5)) || (IfBlackFigureExists(activePiece1.Row + (row * 5), activePiece1.Column + (column * 5)) && whiteTurn) || (IfWhiteFigureExists(activePiece1.Row + (row * 5), activePiece1.Column + (column * 5)) && !whiteTurn)) && !IfFigureExists(activePiece1.Row + (row * 4), activePiece1.Column + (column * 4)))
                         {
-                            AddIfSameColorNotExists(activePiece, activePiece.Row + (row * 5), activePiece.Column + (column * 5));
-                            if ((!IfFigureExists(activePiece.Row + (row * 6), activePiece.Column + (column * 6)) || (IfBlackFigureExists(activePiece.Row + (row * 6), activePiece.Column + (column * 6)) && whiteTurn) || (IfWhiteFigureExists(activePiece.Row + (row * 6), activePiece.Column + (column * 6)) && !whiteTurn)) && !IfFigureExists(activePiece.Row + (row * 5), activePiece.Column + (column * 5)))
+                            AddIfSameColorNotExists(activePiece1, activePiece1.Row + (row * 5), activePiece1.Column + (column * 5));
+                            if ((!IfFigureExists(activePiece1.Row + (row * 6), activePiece1.Column + (column * 6)) || (IfBlackFigureExists(activePiece1.Row + (row * 6), activePiece1.Column + (column * 6)) && whiteTurn) || (IfWhiteFigureExists(activePiece1.Row + (row * 6), activePiece1.Column + (column * 6)) && !whiteTurn)) && !IfFigureExists(activePiece1.Row + (row * 5), activePiece1.Column + (column * 5)))
                             {
-                                AddIfSameColorNotExists(activePiece, activePiece.Row + (row * 6), activePiece.Column + (column * 6));
-                                if ((!IfFigureExists(activePiece.Row + (row * 7), activePiece.Column + (column * 7)) || (IfBlackFigureExists(activePiece.Row + (row * 7), activePiece.Column + (column * 7)) && whiteTurn) || (IfWhiteFigureExists(activePiece.Row + (row * 7), activePiece.Column + (column * 7)) && !whiteTurn)) && !IfFigureExists(activePiece.Row + (row * 6), activePiece.Column + (column * 6)))
+                                AddIfSameColorNotExists(activePiece1, activePiece1.Row + (row * 6), activePiece1.Column + (column * 6));
+                                if ((!IfFigureExists(activePiece1.Row + (row * 7), activePiece1.Column + (column * 7)) || (IfBlackFigureExists(activePiece1.Row + (row * 7), activePiece1.Column + (column * 7)) && whiteTurn) || (IfWhiteFigureExists(activePiece1.Row + (row * 7), activePiece1.Column + (column * 7)) && !whiteTurn)) && !IfFigureExists(activePiece1.Row + (row * 6), activePiece1.Column + (column * 6)))
                                 {
-                                    AddIfSameColorNotExists(activePiece, activePiece.Row + (row * 7), activePiece.Column + (column * 7));
+                                    AddIfSameColorNotExists(activePiece1, activePiece1.Row + (row * 7), activePiece1.Column + (column * 7));
                                 }
                             }
                         }
