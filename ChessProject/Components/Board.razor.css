@@ -9,8 +9,17 @@
     margin-left: 40px;
 }
 
-.cell.active {
-    border: 3px solid green;
+.cell.active::before {
+    position: fixed;
+    width: 25px;
+    height: 25px;
+    content: "";
+    border-radius: 50%;
+    background: grey;
+    display: block;
+    margin-left: 15px;
+    margin-top: 15px;
+    z-index: 1;
 }
 
 /*barvanje celic*/
@@ -33,10 +42,6 @@
 .pawn {
     width: 60px;
     height: 60px;
-}
-
-.pawn.active {
-    border: 2px solid red;
 }
 
 .board-piece {
