@@ -26,4 +26,6 @@
     position: absolute;
     margin-left: 20px;
     margin-top: 200px;
+    max-height: 800px;
+    overflow-x: scroll;
 }
